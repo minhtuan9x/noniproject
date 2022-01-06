@@ -3,7 +3,7 @@ package com.laptrinhjavaweb.service.impl;
 import com.laptrinhjavaweb.converter.ProductConverter;
 import com.laptrinhjavaweb.dto.ProductDTO;
 import com.laptrinhjavaweb.dto.request.ProductRequest;
-import com.laptrinhjavaweb.dto.response.ProductRespone;
+import com.laptrinhjavaweb.dto.response.ProductResponse;
 import com.laptrinhjavaweb.entity.ProductEntity;
 import com.laptrinhjavaweb.repository.ProductRepository;
 import com.laptrinhjavaweb.service.ProductService;
@@ -35,13 +35,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductRespone> findAll(Map<String,String> params) {
-        List<ProductRespone> productRespones = new ArrayList<>();
+    public List<ProductResponse> findAll(Map<String,String> params) {
+        List<ProductResponse> productResponses = new ArrayList<>();
         ProductRequest productRequest = getParams(params);
         productRepository.findAll(productRequest).forEach(item->{
-            productRespones.add(productConverter.toProductRespone(item));
+            productResponses.add(productConverter.toProductRespone(item));
         });
-        return productRespones;
+        return productResponses;
     }
 
     @Override
@@ -60,6 +60,15 @@ public class ProductServiceImpl implements ProductService {
         productEntity.setTotalView(totalViewCurrent+1);
         productRepository.save(productEntity);
         return productDTO;
+    }
+
+    @Override
+    public List<ProductResponse> findAll() {
+        List<ProductResponse> productResponses = new ArrayList<>();
+        productRepository.getAllByOrderByCreatedDateDesc().forEach(item->{
+            productResponses.add(productConverter.toProductRespone(item));
+        });
+        return productResponses;
     }
 
     public ProductRequest getParams(Map<String,String> params){

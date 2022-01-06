@@ -13,78 +13,123 @@
 </head>
 <body>
 <div class="container">
-    <table class="table">
-        <tbody id="tbYT">
-        </tbody>
-    </table>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a href="/trang-chu">Trang Chủ</a></li>
+                <li id="liL">Videos</li>
+            </ul>
+        </div>
+    </div>
+
+    <c:forEach items="${videos}" var="item">
+        <c:if test="${(videos.indexOf(item) % 3) == 0}">
+            <div class="row" style="text-align: center">
+        </c:if>
+        <div class="col-md-4">
+            <span type="button" data-toggle="modal" data-src="${item.link}" data-target="#myModal">
+<%--                <img src="${item.thumbnail}" style="border-radius: 5px">--%>
+                <div class="ytImgContainer">
+                        <div class="ytImgThumbBox">
+                            <img src="${item.thumbnail}" class="ytImgThumbImg" alt="text">
+                            <div class="ytImgThumbPlay">
+                                <img src="/img/iconPlay.jpg" class="ytImgThumbPlayButton">
+                            </div>
+                        </div>
+                </div>
+
+                <h5 style="padding-left: 20px;padding-right: 20px;font-size: 15px"> ${item.title}</h5>
+            </span>
+        </div>
+        <c:if test="${(videos.indexOf(item) % 3) == 2}">
             </div>
-            <div class="modal-body">
-                <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </c:if>
+    </c:forEach>
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <!-- 16:9 aspect ratio -->
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="" id="video" allowscriptaccess="always"
+                            allow="autoplay" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    let url123 = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyCUCv-kqTzk3EeRySln9SL9xv4YQiYqJzc&channelId=UCdMfvEqKQTk_QMdrd837XFg&part=snippet,id&order=date&maxResults=20'
-    $.ajax({
-        type: "GET",
-        url: url123,
-        crossDomain: true,
-        datatype: "json",
-        success: function (res) {
-            let arrYou = res.items;
-            console.log(arrYou);
-            let str = '<tr>'
-            let flag = 0;
-            arrYou.forEach(item => {
-                let id = "";
-                id+=item.id.videoId;
-                str += '<td >' +
-                    '<div class="row"> ' +
-                    '<img id="'+id+'" type="button" src="' + item.snippet.thumbnails.medium.url + '" style="border-radius: 3px"' +
-                    'onclick="onVideo(this.id)" data-toggle="modal"' +
-                    '>' +
-                    '</div>' +
-                    '<div class="row"> ' +
-                    '<h5>' + item.snippet.title + '</h5>' +
-                    '</div>' +
-                    '</td>'
-                flag++;
-                if (flag == 3) {
-                    str += '</tr>'
-                    $("#tbYT").append(str);
-                    str = '<tr>';
-                    flag = 0;
-                }
-            })
-        },
-        error: function () {
-            alert("loi")
-        }
-    })
+    $(document).ready(function () {
 
-    function onVideo(value) {
-        window.location.href="https://www.youtube.com/watch?v="+value
+        let $videoSrc;
+        $('span').click(function () {
+            $videoSrc = $(this).data("src");
+        });
+        console.log($videoSrc);
+
+        $('#myModal').on('shown.bs.modal', function (e) {
+            $("#video").attr('src', $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
+        })
+        $('#myModal').on('hide.bs.modal', function (e) {
+            $("#video").attr('src', $videoSrc);
+        })
+
+
+    });
+</script>
+<style>
+    .ytImgContainer img {
+        max-width: 100%;
+        height: auto;
     }
 
-</script>
-</body>
-<style>
-    #tbYT tr td {
-        position: center;
+    .ytImgContainer {
+        margin: 0 auto;
+        max-width: 604px;
+        width: 100%;
+    }
+
+    .ytImgContainer:after {
+        clear: both;
+    }
+
+    .ytImgContainer:before,
+    .ytImgContainer:after {
+        content: "";
+        display: table;
+    }
+
+    div.ytImgThumbBox{
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden;
+    }
+
+    div.ytImgThumbPlay{
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        width:48px !important;
+        height:48px !important;
+        margin: -24px 0 0 -24px !important;
+    }
+
+    img.ytImgThumbImg{
+        /*width: 100% !important;*/
+        /*height: 100% !important;*/
+        /*margin: -9.5% 0px -12%;*/
+        border-radius: 5px;
+    }
+    .ytImgThumbPlay:hover{
+        -ms-transform: scale(2); /* IE 9 */
+        -webkit-transform: scale(2); /* Safari 3-8 */
+        transform: scale(2);
     }
 </style>
+
+</body>
+
 </html>

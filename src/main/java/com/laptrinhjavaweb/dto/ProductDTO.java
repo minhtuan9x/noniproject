@@ -6,6 +6,7 @@ import java.util.List;
 public class ProductDTO extends AbstractDTO {
     private String name;
     private Integer price;
+    private String priceStr;
     private String description;
     private String imgLink;
     private String imgTitle;
@@ -13,6 +14,14 @@ public class ProductDTO extends AbstractDTO {
     private Integer totalView;
     private List<CommentProductDTO> commentProductDTOS = new ArrayList<>();
     private List<ContactDTO> contactDTOS = new ArrayList<>();
+
+    public String getPriceStr() {
+        return priceStr;
+    }
+
+    public void setPriceStr(String priceStr) {
+        this.priceStr = priceStr;
+    }
 
     public Integer getTotalView() {
         return totalView;

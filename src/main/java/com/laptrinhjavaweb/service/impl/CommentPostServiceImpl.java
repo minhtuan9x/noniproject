@@ -6,6 +6,7 @@ import com.laptrinhjavaweb.entity.CommentPostEntity;
 import com.laptrinhjavaweb.repository.CommentPostRepository;
 import com.laptrinhjavaweb.repository.PostRepository;
 import com.laptrinhjavaweb.service.CommentPostService;
+import com.laptrinhjavaweb.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,15 +21,26 @@ public class CommentPostServiceImpl implements CommentPostService {
     private CommentPostRepository commentPostRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private MailService mailService;
 
     @Override
     @Transactional
     public void save(CommentPostDTO commentPostDTO,Long id) {
-        CommentPostEntity commentPostEntity = commentPostRepository.findOne(commentPostDTO.getId());
-        commentPostEntity.setReply(commentPostDTO.getReply());
-        commentPostEntity.setStatus(1);
-        commentPostEntity.setPostEntity(postRepository.findOne(id));
-        commentPostRepository.save(commentPostEntity);
+        if(commentPostDTO.getId()!=null){
+            CommentPostEntity commentPostEntity = commentPostRepository.findOne(commentPostDTO.getId());
+            commentPostEntity.setReply(commentPostDTO.getReply());
+            commentPostEntity.setStatus(1);
+            commentPostEntity.setPostEntity(postRepository.findOne(id));
+            commentPostRepository.save(commentPostEntity);
+        }else {
+            CommentPostEntity commentPostEntity ;
+            commentPostEntity =commentPostConverter.toCommentPostEntity(commentPostDTO);
+            commentPostEntity.setStatus(0);
+            commentPostEntity.setPostEntity(postRepository.findOne(id));
+            commentPostRepository.save(commentPostEntity);
+            mailService.sentMailCommentPost(commentPostDTO,id);
+        }
     }
 
     @Override

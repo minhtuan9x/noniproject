@@ -7,6 +7,7 @@ public class PostDTO extends AbstractDTO{
     private String title;
     private String imgTitle;
     private String content;
+    private String sortContent;
     private Integer totalView;
     private List<CommentPostDTO> commentPostDTOS = new ArrayList<>();
 
@@ -48,5 +49,13 @@ public class PostDTO extends AbstractDTO{
 
     public void setTotalView(Integer totalView) {
         this.totalView = totalView;
+    }
+
+    public String getSortContent() {
+        return sortContent;
+    }
+
+    public void setSortContent(String sortContent) {
+        this.sortContent = sortContent;
     }
 }

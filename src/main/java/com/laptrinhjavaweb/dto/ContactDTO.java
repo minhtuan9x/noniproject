@@ -4,8 +4,7 @@ public class ContactDTO extends AbstractDTO{
     private String name;
     private String phone;
     private String email;
-    private String needKey;
-    private String needValue;
+    private String address;
     private Integer status;
 
     public Integer getStatus() {
@@ -40,19 +39,11 @@ public class ContactDTO extends AbstractDTO{
         this.email = email;
     }
 
-    public String getNeedKey() {
-        return needKey;
+    public String getAddress() {
+        return address;
     }
 
-    public void setNeedKey(String needKey) {
-        this.needKey = needKey;
-    }
-
-    public String getNeedValue() {
-        return needValue;
-    }
-
-    public void setNeedValue(String needValue) {
-        this.needValue = needValue;
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -1,6 +1,8 @@
 package com.laptrinhjavaweb.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "contact")
@@ -12,13 +14,28 @@ public class ContactEntity extends BaseEntity {
     @Column
     private String email;
     @Column
-    private String need;
+    private String address;
     @Column(columnDefinition = "integer default 0")
     private Integer status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productid",nullable = false)
-    private ProductEntity productEntity;
+    @OneToMany(mappedBy = "contactEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<ProductContactEntity> productContactEntities = new ArrayList<>();
+
+    public List<ProductContactEntity> getProductContactEntities() {
+        return productContactEntities;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setProductContactEntities(List<ProductContactEntity> productContactEntities) {
+        this.productContactEntities = productContactEntities;
+    }
 
     public String getName() {
         return name;
@@ -42,22 +59,6 @@ public class ContactEntity extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getNeed() {
-        return need;
-    }
-
-    public void setNeed(String need) {
-        this.need = need;
-    }
-
-    public ProductEntity getProductEntity() {
-        return productEntity;
-    }
-
-    public void setProductEntity(ProductEntity productEntity) {
-        this.productEntity = productEntity;
     }
 
     public Integer getStatus() {

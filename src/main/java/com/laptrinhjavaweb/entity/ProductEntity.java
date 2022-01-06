@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "product")
-public class ProductEntity extends BaseEntity{
+public class ProductEntity extends BaseEntity {
     @Column(name = "name")
     private String name;
     @Column(name = "price")
@@ -22,11 +22,19 @@ public class ProductEntity extends BaseEntity{
     @Column(columnDefinition = "integer default 0")
     private Integer totalView;
 
-    @OneToMany(mappedBy = "productEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<ContactEntity> contactEntities = new ArrayList<>();
-
-    @OneToMany(mappedBy = "productEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommentProductEntity> commentProductEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ProductContactEntity> productContactEntities = new ArrayList<>();
+
+    public List<ProductContactEntity> getProductContactEntities() {
+        return productContactEntities;
+    }
+
+    public void setProductContactEntities(List<ProductContactEntity> productContactEntities) {
+        this.productContactEntities = productContactEntities;
+    }
 
     public Integer getTotalView() {
         return totalView;
@@ -84,13 +92,6 @@ public class ProductEntity extends BaseEntity{
         this.imgTitle = imgTitle;
     }
 
-    public List<ContactEntity> getContactEntities() {
-        return contactEntities;
-    }
-
-    public void setContactEntities(List<ContactEntity> contactEntities) {
-        this.contactEntities = contactEntities;
-    }
 
     public List<CommentProductEntity> getCommentProductEntities() {
         return commentProductEntities;

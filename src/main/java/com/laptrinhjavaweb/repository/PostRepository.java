@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface PostRepository extends PostRepositoryCustom, JpaRepository<PostEntity,Long> {
     void deleteByIdIn(List<Long> ids);
+    List<PostEntity> findTop4ByOrderByCreatedDateDesc();
 }

@@ -18,6 +18,7 @@ public class CommentPostEntity extends BaseEntity {
     @Column(columnDefinition = "integer default 0")
     private Integer status;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postid",nullable = false)
     private PostEntity postEntity;

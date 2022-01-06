@@ -277,6 +277,17 @@
 
 
 </div><!-- /.main-content -->
+<style>
+
+    /* Important part */
+    .modal-dialog{
+        overflow-y: initial !important
+    }
+    .modal-body{
+        height: 450px;
+        overflow-y: auto;
+    }
+</style>
 <script>
     function openModal() {
         $("#myModal").modal()

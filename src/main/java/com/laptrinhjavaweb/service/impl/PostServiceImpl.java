@@ -20,6 +20,15 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
     @Override
+    public List<PostDTO> findAll() {
+        List<PostDTO> postDTOS = new ArrayList<>();
+        postRepository.findAll().forEach(item->{
+            postDTOS.add(postConverter.toPostDTO(item));
+        });
+        return postDTOS;
+    }
+
+    @Override
     public List<PostDTO> findAll(PostDTO postDTO) {
         List<PostDTO> postDTOS = new ArrayList<>();
         postRepository.findAll(postDTO).forEach(item->{
@@ -42,6 +51,11 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public PostDTO save(PostDTO postDTO) {
         PostEntity postEntity = postConverter.toPostEntity(postDTO);
+        if(postDTO.getId()!=null){
+            PostEntity postEntityFound = Optional.ofNullable(postRepository.findOne(postDTO.getId())).orElse(new PostEntity());
+            postEntity.setCreatedBy(postEntityFound.getCreatedBy());
+            postEntity.setCreatedDate(postEntityFound.getCreatedDate());
+        }
         return postConverter.toPostDTO(postRepository.save(postEntity));
     }
 
@@ -50,5 +64,14 @@ public class PostServiceImpl implements PostService {
     public List<Long> delete(List<Long> ids) {
         postRepository.deleteByIdIn(ids);
         return ids;
+    }
+
+    @Override
+    public List<PostDTO> findTop4ByOrderByCreatedDateDesc() {
+        List<PostDTO> postDTOS = new ArrayList<>();
+        postRepository.findTop4ByOrderByCreatedDateDesc().forEach(item->{
+            postDTOS.add(postConverter.toPostDTO(item));
+        });
+        return postDTOS;
     }
 }

@@ -1,7 +1,7 @@
 package com.laptrinhjavaweb.api.admin;
 
 import com.laptrinhjavaweb.dto.ProductDTO;
-import com.laptrinhjavaweb.dto.response.ProductRespone;
+import com.laptrinhjavaweb.dto.response.ProductResponse;
 import com.laptrinhjavaweb.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class ProductAPI {
         return productDTO;
     }
     @GetMapping
-    public List<ProductRespone> findAll(@RequestParam Map<String,String> params){
+    public List<ProductResponse> findAll(@RequestParam Map<String,String> params){
         return productService.findAll(params);
     }
     @GetMapping("/{id}")

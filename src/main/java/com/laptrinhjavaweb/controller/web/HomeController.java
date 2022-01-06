@@ -1,5 +1,8 @@
 package com.laptrinhjavaweb.controller.web;
 
+import com.laptrinhjavaweb.service.PostService;
+import com.laptrinhjavaweb.service.VideoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -14,10 +17,16 @@ import javax.servlet.http.HttpSession;
 
 @Controller(value = "homeControllerOfWeb")
 public class HomeController {
+	@Autowired
+	private PostService postService;
+	@Autowired
+	private VideoService videoService;
 
 	@RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
 	public ModelAndView homePage() {
 		ModelAndView mav = new ModelAndView("web/home");
+		mav.addObject("posts",postService.findTop4ByOrderByCreatedDateDesc());
+		mav.addObject("videos",videoService.findTop6());
 		return mav;
 	}
 

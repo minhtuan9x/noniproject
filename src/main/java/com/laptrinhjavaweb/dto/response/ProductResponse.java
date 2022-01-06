@@ -2,7 +2,7 @@ package com.laptrinhjavaweb.dto.response;
 
 import com.laptrinhjavaweb.dto.AbstractDTO;
 
-public class ProductRespone extends AbstractDTO {
+public class ProductResponse extends AbstractDTO {
     private String name;
     private String priceStr;
     private String description;

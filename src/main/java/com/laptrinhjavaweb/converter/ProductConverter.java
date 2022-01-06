@@ -3,7 +3,7 @@ package com.laptrinhjavaweb.converter;
 import com.laptrinhjavaweb.dto.CommentProductDTO;
 import com.laptrinhjavaweb.dto.ContactDTO;
 import com.laptrinhjavaweb.dto.ProductDTO;
-import com.laptrinhjavaweb.dto.response.ProductRespone;
+import com.laptrinhjavaweb.dto.response.ProductResponse;
 import com.laptrinhjavaweb.entity.ProductEntity;
 import com.laptrinhjavaweb.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -33,15 +33,16 @@ public class ProductConverter {
         }
         return productEntity;
     }
-    public ProductRespone toProductRespone(ProductEntity productEntity){
+    public ProductResponse toProductRespone(ProductEntity productEntity){
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
-        ProductRespone productRespone = modelMapper.map(productEntity,ProductRespone.class);
+        ProductResponse productResponse = modelMapper.map(productEntity, ProductResponse.class);
         if(productEntity.getPrice()!=null){
-            productRespone.setPriceStr(decimalFormat.format(productEntity.getPrice()));
+            productResponse.setPriceStr(decimalFormat.format(productEntity.getPrice()));
         }
-        return productRespone;
+        return productResponse;
     }
     public ProductDTO toProductDTO(ProductEntity productEntity){
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
         ProductDTO productDTO = modelMapper.map(productEntity,ProductDTO.class);
         List<CommentProductDTO> commentProductDTOList = new ArrayList<>();
         List<ContactDTO> contactDTOS = new ArrayList<>();
@@ -49,10 +50,13 @@ public class ProductConverter {
             CommentProductDTO commentProductDTO = commentProductConverter.toCommentProductDTO(item);
             commentProductDTOList.add(commentProductDTO);
         });
-        productEntity.getContactEntities().forEach(item->{
-            ContactDTO contactDTO = contactConverver.toContactDTO(item);
-            contactDTOS.add(contactDTO);
-        });
+//        productEntity.getContactEntities().forEach(item->{
+//            ContactDTO contactDTO = contactConverver.toContactDTO(item);
+//            contactDTOS.add(contactDTO);
+//        });
+        if(productEntity.getPrice()!=null){
+            productDTO.setPriceStr(decimalFormat.format(productEntity.getPrice()));
+        }
         productDTO.setCommentProductDTOS(commentProductDTOList);
         productDTO.setContactDTOS(contactDTOS);
         return productDTO;

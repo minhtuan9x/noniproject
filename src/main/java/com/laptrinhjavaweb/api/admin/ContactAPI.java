@@ -13,23 +13,23 @@ public class ContactAPI {
     @Autowired
     private ContactService contactService;
 
-    @GetMapping("/{id}/product")
-    public List<ContactDTO> getAllContactByProductId(@PathVariable("id") Long id) {
-        return contactService.findAllContactByProductId(id);
-    }
-    @PostMapping("/{productId}")
-    public ContactDTO save(@PathVariable("productId") Long productId,@RequestBody ContactDTO contactDTO){
-        contactService.save(contactDTO,productId);
-        return contactDTO;
-    }
-    @PutMapping("/{id}")
-    public Long setProcessed(@PathVariable("id")Long id){
-        contactService.setProcessed(id);
-        return id;
-    }
-    @DeleteMapping("/{id}")
-    public Long delete(@PathVariable("id") Long id){
-        contactService.delete(id);
-        return id;
-    }
+//    @GetMapping("/{id}/product")
+//    public List<ContactDTO> getAllContactByProductId(@PathVariable("id") Long id) {
+//        return contactService.findAllContactByProductId(id);
+//    }
+//    @PostMapping("/{productId}")
+//    public ContactDTO save(@PathVariable("productId") Long productId,@RequestBody ContactDTO contactDTO){
+//        contactService.save(contactDTO,productId);
+//        return contactDTO;
+//    }
+//    @PutMapping("/{id}")
+//    public Long setProcessed(@PathVariable("id")Long id){
+//        contactService.setProcessed(id);
+//        return id;
+//    }
+//    @DeleteMapping("/{id}")
+//    public Long delete(@PathVariable("id") Long id){
+//        contactService.delete(id);
+//        return id;
+//    }
 }

@@ -74,7 +74,7 @@
                 <div class="col-xs-12">
                     <div class="pull-right">
                         <button id="xoaBuilding" class="btn btn-white btn-warning btn-bold" data-toggle="tooltip,modal"
-                                title="Xoá Toà Nhà" onclick="openModal()">
+                                title="Xoá Toà Nhà" onclick="openModal(null)">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -126,7 +126,7 @@
                                         <i class="fa fa-edit" aria-hidden="true"></i>
                                     </button>
                                     <button class="btn btn-xs btn-danger" data-toggle="tooltip"
-                                            title="Xoá sản phẩm" value="${item.id}" onclick="xoaPost(value)">
+                                            title="Xoá sản phẩm" value="${item.id}" onclick="openModal(value)">
                                         <i class="fa fa-remove" aria-hidden="true"></i>
                                     </button>
                                     <button class="btn btn-xs btn-default" data-toggle="tooltip"
@@ -157,7 +157,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" id="btnXoa" class="btn btn-default" onclick="xoaPost(null)">Xoá</button>
+                <button type="button" id="btnXoa" class="btn btn-default" onclick="xoaPost()">Xoá</button>
             </div>
         </div>
     </div>
@@ -200,8 +200,24 @@
         </div>
     </div>
 </div>
+
+<style>
+
+    /* Important part */
+    .modal-dialog{
+        overflow-y: initial !important
+    }
+    .modal-body{
+        height: 450px;
+        overflow-y: auto;
+    }
+</style>
+
 <script>
-    function openModal() {
+    let idOne = null;
+
+    function openModal(value) {
+        idOne = value;
         $("#myModal").modal()
     }
 
@@ -213,9 +229,9 @@
     });
 
 
-    function xoaPost(value) {
+    function xoaPost() {
         let values = [];
-        if (value != null)
+        if (idOne != null)
             values.push(value);
         $.each($("input[name='checkPosts[]']:checked"), function () {
             values.push($(this).val());
@@ -228,7 +244,6 @@
             contentType: "application/json",
             data: JSON.stringify(values),
             success: function (res) {
-                alert("Xoa Thanh Cong")
                 window.location.reload()
             },
             error: function () {
@@ -252,21 +267,24 @@
                 cmts.forEach(item => {
                     let moi = "";
                     if (item.status == 0) {
-                        moi = '<p style="color:red;float: left">Bình Luận Mới</p>';
+                        moi = '<p style="color:red;float: left" id="' + item.id + "blm" + '">Bình Luận Mới</p>';
                     }
                     let strCheclCmt = '<td class="center">' +
                         '<label class="pos-rel">' +
                         '<input type="checkbox" class="ace" name="checkCmts[]" value="' + item.id + '">' +
                         '<span class="lbl"></span>' +
                         '</label>' +
-                        '</td>'
+                        '</td>';
+                    let repIn = ""
+                    if (item.reply != null)
+                        repIn = item.reply;
                     let str = '<tr>' +
                         strCheclCmt
-                        + '<td>' + item.name + '</td>'
-                        + '<td>' + item.phone + '</td>'
-                        + '<td>' + item.email + '</td>'
-                        + '<td>' + item.main + '</td>'
-                        + '<td>' + '<input id="' + item.id + "inputRep" + '" type="text" class="form-control" value="' + item.reply + '">' +
+                        + '<td style="width: 100px">' + item.name + '</td>'
+                        + '<td style="width: 100px"> ' + item.phone + '</td>'
+                        + '<td style="width: 100px">' + item.email + '</td>'
+                        + '<td style="width: 200px">' + item.main + '</td>'
+                        + '<td>' + '<input id="' + item.id + "inputRep" + '" type="text" class="form-control" value="' + repIn + '">' +
                         moi + '<button value="' + item.id + '" onclick="xoa(this.value)" style="float: right">Del</button> <button id="' + item.id + '" style="float: right"' +
                         'onclick="reply(this.id)">Rep</button></td>'
                         + '</tr>';
@@ -293,7 +311,7 @@
             datatype: "json",
             contentType: "application/json",
             success: function (res) {
-                alert("done")
+                $("#"+value+"blm").empty()
             },
             error: function () {
                 alert("fail")
@@ -310,21 +328,18 @@
         });
         console.log(values)
         $.ajax({
-            url: "<c:url value="/api/commentpost/" />" ,
+            url: "<c:url value="/api/commentpost/" />",
             method: "delete",
             datatype: "json",
-            contentType:"application/json",
-            data:JSON.stringify(values),
+            contentType: "application/json",
+            data: JSON.stringify(values),
             success: function (res) {
-                alert("xoa thanh cong")
                 window.location.reload()
             },
             error: function () {
                 alert("fail")
             }
         })
-
-        alert("Xoa Thanh Cong")
         window.location.reload()
     }
 </script>

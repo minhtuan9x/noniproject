@@ -8,7 +8,7 @@
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
                 <small>
-                    <i class="fa fa-leaf"></i>
+                    <i class="fa fa-home"></i>
                     Trang quản trị
                 </small>
             </a>
