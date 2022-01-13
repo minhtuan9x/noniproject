@@ -36,7 +36,7 @@
                 <div class="col-md-12">
                     <br>
                     <br>
-                    <form:form>
+                    <form:form commandName="contactDTO" id="formDatHang">
                         <div class="form-group">
                             <label><b>Họ và Tên*: </b></label>
                             <input type="text" class="form-control" name="name">
@@ -53,6 +53,12 @@
                             <label><b>Địa Chỉ*: </b></label>
                             <input type="text" class="form-control" name="address">
                         </div>
+                        <div class="form-group">
+                            <div class="g-recaptcha"
+                                 data-sitekey="6LfSpv4dAAAAAO22QDkStgI2uCRNosPVPyAFHEeJ">
+                            </div>
+                        </div>
+
                     </form:form>
                 </div>
             </div>
@@ -78,13 +84,13 @@
                     <hr>
                     <p id="tamtinh"></p>
                     <p><i>* Tổng tiền bao gồm phí ship, khi bạn đặt hàng sẽ có nhân viên liên hệ để xác nhận</i></p>
-<%--                    <p id="tong"></p>--%>
+                    <%--                    <p id="tong"></p>--%>
                     <hr>
                     <b>Phương thức thanh toán mặc định: </b>Thanh toán khi nhận hàng
                     <br>
                     <br>
                     <br>
-                    <button type="button" class="btn btn-danger btn-block">Xác Nhận Đặt Hàng</button>
+                    <button type="button" class="btn btn-danger btn-block" id="xndathang">Xác Nhận Đặt Hàng</button>
                 </div>
             </div>
         </div>
@@ -124,7 +130,7 @@
                 title = res.name;
                 priceStr123 = res.priceStr;
                 price123 = res.price;
-                priceTotal += parseInt(price123);
+                priceTotal += parseInt(price123 * quantity);
                 content = '<tr>' +
                     '<td >' + '[' + res.mass + ']' + title + '<p style="color:red;"> x' + quantity + '</p></td>' +
                     '<td>' + (price123 * quantity).toLocaleString('it-IT', {
@@ -153,74 +159,52 @@
     if (a != "")
         $("#dathang").prop('disabled', true);
 
-
-    if (address_2 = localStorage.getItem('address_2_saved')) {
-        $('select[name="calc_shipping_district"] option').each(function () {
-            if ($(this).text() == address_2) {
-                $(this).attr('selected', '')
-            }
+    $("#xndathang").click(function (e) {
+        e.preventDefault()
+        let dataForm = $("#formDatHang").serializeArray();
+        let data = {};
+        let productIds = [];
+        dataForm.forEach(item => {
+            if (item.name == "g-recaptcha-response")
+                data["captchaResponse"] = item.value
+            data[item.name] = item.value;
         })
-        $('input.billing_address_2').attr('value', address_2)
-    }
-    if (district = localStorage.getItem('district')) {
-        $('select[name="calc_shipping_district"]').html(district)
-        $('select[name="calc_shipping_district"]').on('change', function () {
-            var target = $(this).children('option:selected')
-            target.attr('selected', '')
-            $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
-            address_2 = target.text()
-            $('input.billing_address_2').attr('value', address_2)
-            district = $('select[name="calc_shipping_district"]').html()
-            localStorage.setItem('district', district)
-            localStorage.setItem('address_2_saved', address_2)
-        })
-    }
-    $('select[name="calc_shipping_provinces"]').each(function () {
-        var $this = $(this),
-            stc = ''
-        c.forEach(function (i, e) {
-            e += +1
-            stc += '<option value=' + e + '>' + i + '</option>'
-            $this.html('<option value="">Tỉnh / Thành phố</option>' + stc)
-            if (address_1 = localStorage.getItem('address_1_saved')) {
-                $('select[name="calc_shipping_provinces"] option').each(function () {
-                    if ($(this).text() == address_1) {
-                        $(this).attr('selected', '')
-                    }
-                })
-                $('input.billing_address_1').attr('value', address_1)
-            }
-            $this.on('change', function (i) {
-                i = $this.children('option:selected').index() - 1
-                var str = '',
-                    r = $this.val()
-                if (r != '') {
-                    arr[i].forEach(function (el) {
-                        str += '<option value="' + el + '">' + el + '</option>'
-                        $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>' + str)
-                    })
-                    var address_1 = $this.children('option:selected').text()
-                    var district = $('select[name="calc_shipping_district"]').html()
-                    localStorage.setItem('address_1_saved', address_1)
-                    localStorage.setItem('district', district)
-                    $('select[name="calc_shipping_district"]').on('change', function () {
-                        var target = $(this).children('option:selected')
-                        target.attr('selected', '')
-                        $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
-                        var address_2 = target.text()
-                        $('input.billing_address_2').attr('value', address_2)
-                        district = $('select[name="calc_shipping_district"]').html()
-                        localStorage.setItem('district', district)
-                        localStorage.setItem('address_2_saved', address_2)
-                    })
-                } else {
-                    $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>')
-                    district = $('select[name="calc_shipping_district"]').html()
-                    localStorage.setItem('district', district)
-                    localStorage.removeItem('address_1_saved', address_1)
-                }
+        for (let key in cart) {
+            productIds.push({
+                "productId": key,
+                "quantity": cart[key]
             })
-        })
+        }
+        data["productIdRequests"] = productIds;
+        console.log(data);
+        if(data.name==""){
+            alert("Tên Không Được Để Trống !!!")
+        }else{
+            if(data.phone==""){
+                alert("Số Điện Thoại Không Được Để Trống !!!")
+            }else{
+                if(data.captchaResponse==""){
+                    alert("Xác Minh Tôi Không Phải Là Robot!!!")
+                }else {
+                    $.ajax({
+                        url: "/api/contact",
+                        type: "post",
+                        data: JSON.stringify(data),
+                        datatype: "json",
+                        contentType: "application/json",
+                        success: function (res) {
+                            localStorage.clear()
+                            alert("Đặt Hàng Thành Công, Nhân Viên Sẽ Liên Hệ Lại Với Bạn Để Xác Nhận!!!")
+                            window.location.href="/trang-chu"
+                        },
+                        error: function () {
+                            alert("fail")
+                        }
+                    })
+                }
+
+            }
+        }
     })
 </script>
 </body>

@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/common/taglib.jsp" %>
 <html>
 <head>
     <title>Detail</title>
@@ -38,8 +39,9 @@
                                 <i class="fa fa-minus"></i>
                             </button>
                         </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number"
-                               min="1" max="100">
+                        <label for="quantity"></label><input type="text" id="quantity" name="quantity"
+                                                             class="form-control input-number"
+                                                             min="1" max="100">
                         <span class="input-group-btn">
                             <button type="button" class="quantity-right-plus btn btn-success btn-number"
                                     data-type="plus" data-field="">
@@ -51,10 +53,86 @@
                 <div class="col-md-9">
                     <button type="button" class="btn btn-danger" id="addCart" value="${product.id}">Thêm vào giỏ hàng
                     </button>
+                    <button type="button" class="btn btn-danger" id="nowCart" value="${product.id}">Mua Ngay
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+    <br>
+    <hr>
+    <div class="row">
+        <h5 style="color: #0c5460">Phản hồi của khách hàng</h5>
+        <div class="col-md-12">
+            <ul class="list-group" id="list2">
+                <c:forEach items="${product.commentProductDTOS}" var="item">
+                    <li class="list-group-item list-group-item-light"><b>Tên Khách Hàng: </b>${item.name}
+                        - ${item.createdDate}</li>
+                    <li class="list-group-item list-group-item-light"><b>Bình Luận: </b>${item.main}</li>
+                    <c:if test="${item.reply!=null}">
+                        <li class="list-group-item list-group-item-text"><b>Phản Hồi Từ Admin: </b>${item.reply}
+                        </li>
+                    </c:if>
+                    <br>
+                </c:forEach>
+            </ul>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <form id="formfeedback">
+                <div class="form-group">
+                    <div class="form-row">
+                        <h1>Trả lời</h1>
+                    </div>
+                    <div class="form-row">
+                        <label style="color: darkslategray;">Email của bạn sẽ không được hiển thị công khai. Các
+                            trường bắt buộc
+                            được đánh dấu </label>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label>Bình luận</label>
+                            <textarea class="form-control" rows="3" name="main"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label>Tên*</label>
+                            <input type="text" class="form-control" name="name">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Email*</label>
+                            <input type="email" class="form-control" name="email">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label>Số điện thoại</label>
+                            <input type="text" class="form-control" name="phone">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="g-recaptcha"
+                                 data-sitekey="6LfSpv4dAAAAAO22QDkStgI2uCRNosPVPyAFHEeJ">
+                            </div>
+                            <div id="tbf">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-dark">Phản Hồi</button>
+            </form>
+        </div>
+    </div>
+    <br>
+
 </div>
 <script>
     $('#quantity').val("1")
@@ -90,12 +168,12 @@
     let cart = {};
 
     $("#addCart").click(function () {
-        if (JSON.parse(localStorage.getItem("myCart")) != null){
+        if (JSON.parse(localStorage.getItem("myCart")) != null) {
             cart = JSON.parse(localStorage.getItem("myCart"));
         }
         let cartRS = JSON.parse(localStorage.getItem("myCart"));
         for (let x in cartRS) {
-            if(x==$(this).val()){
+            if (x == $(this).val()) {
                 alert("Sản Phẩm Này Đã Có Trong Giỏ Hàng !!!")
                 return;
             }
@@ -105,7 +183,93 @@
         alert("Đã Thêm Sản Phẩm Vào Giỏ Hàng!!!")
         window.location.reload()
     })
+    $("#nowCart").click(function () {
+        cart[$(this).val()] = quantity123;
+        localStorage.clear()
+        localStorage.setItem("myCart", JSON.stringify(cart))
+        window.location.href = "/order"
+    })
+
+    $(document).ready(function () {
+
+        $("#formfeedback").submit(function (e) {
+            e.preventDefault()
+            let dataIn = $("#formfeedback").serializeArray()
+            let name = $("input[name='name']").val()
+            let email = $("input[name='email']").val()
+            let comment = $("textarea[name='main']").val()
+            console.log(dataIn)
+            let data = {};
+            dataIn.forEach(item => {
+                if (item.name == "g-recaptcha-response")
+                    data["captchaResponse"] = item.value
+                data[item.name] = item.value
+            })
+            if (name == "" || email == "") {
+                alert('Tên và email không được để trống');
+            } else {
+                if (comment.length <= 10) {
+                    alert('Bình luận phải dài hơn 10 kí tự');
+                } else {
+                    if (data.captchaResponse == "") {
+                        $("#tbf").html("<p style='color: red'>Vui lòng xác minh rằng bạn không phải robot</p>")
+                    } else {
+                        $.ajax({
+                            url: "/api/commentproduct/" + "${product.id}" + "/product",
+                            type: "post",
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function (res) {
+                                window.location.reload()
+                            },
+                            error: function () {
+                                alert("Thất Bại")
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    })
+
+    // grecaptcha.ready(function() {
+    //     grecaptcha.execute('reCAPTCHA_site_key', {action: 'homepage'}).then(function(token) {
+    //     ...
+    //     });
+    // });
 
 </script>
+<style>
+    form {
+        background-color: #ecf2f9;
+        padding: 25px;
+        border-radius: 1%;
+    }
+
+    h1 {
+        font-family: Monospace;
+    }
+
+    .list-group {
+        height: 420px;
+        width: 100%;
+    }
+
+    .list-group {
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+
+    #list2 {
+        height: 400px;
+        width: 100%;
+    }
+
+    #list2 {
+        overflow: hidden;
+        overflow-y: scroll;
+    }
+</style>
 </body>
 </html>

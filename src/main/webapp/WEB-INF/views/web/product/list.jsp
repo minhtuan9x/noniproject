@@ -44,15 +44,20 @@
                     <div class="row" style="text-align: center">
                 </c:if>
                 <div class="col-md-3">
-                    <div id="sp" onclick="window.location.href='/product/${item.id}/detail'   ">
+                    <div id="sp" onclick="window.location.href='/product/${item.id}/detail'">
                         <div>
                             <img style="border-radius: 5px" src="${item.imgTitle}">
                         </div>
                         <div>
-                            <a style="color: #2b542c">[${item.mass}]${item.name}</a>
+                            <a style="color: #2b542c">[<b>${item.mass}</b>]${item.name}</a>
                         </div>
                         <div>
                             <p style="color: darkred;font-weight: bold;">${item.priceStr}đ</p>
+                        </div>
+                        <div style="padding-bottom: 5px;color:#7b3f25;">
+                            <button class="btn btn-light btn-block" onclick="window.location.href='/product/${item.id}/detail'">
+                                Đặt Hàng
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -63,7 +68,7 @@
             </c:forEach>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: 100px">
         <div class="col-md-12" id="head2">
             <br>
             <p>Tất cả các loại cà phê bên mình đều Rang mộc, không trộn hương liệu và không trộn các loại bột khác (Hoàn

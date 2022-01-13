@@ -2,13 +2,17 @@ package com.laptrinhjavaweb.service.impl;
 
 import com.laptrinhjavaweb.converter.CommentProductConverter;
 import com.laptrinhjavaweb.dto.CommentProductDTO;
+import com.laptrinhjavaweb.entity.CommentPostEntity;
 import com.laptrinhjavaweb.entity.CommentProductEntity;
 import com.laptrinhjavaweb.entity.ProductEntity;
 import com.laptrinhjavaweb.repository.CommentProductRepository;
 import com.laptrinhjavaweb.repository.ProductRepository;
 import com.laptrinhjavaweb.service.CommentProductService;
+import com.laptrinhjavaweb.service.GoogleCaptchaService;
+import com.laptrinhjavaweb.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommentProductServiceImpl implements CommentProductService {
@@ -18,25 +22,36 @@ public class CommentProductServiceImpl implements CommentProductService {
     private CommentProductConverter commentProductConverter;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private MailService mailService;
+    @Autowired
+    private GoogleCaptchaService googleCaptchaService;
 
     @Override
-    public void save(CommentProductDTO commentProductDTO,Long id) {
+    @Transactional
+    public boolean save(CommentProductDTO commentProductDTO,Long id) {
         try {
-            ProductEntity productEntity = productRepository.findOne(id);
-            CommentProductEntity commentProductEntity = commentProductConverter.toCommentProductEntity(commentProductDTO);
             if(commentProductDTO.getId()!=null){
-                CommentProductEntity commentProductEntity1 = commentProductRepository.findOne(commentProductDTO.getId());
-                commentProductEntity.setName(commentProductEntity1.getName());
-                commentProductEntity.setEmail(commentProductEntity1.getEmail());
-                commentProductEntity.setPhone(commentProductEntity1.getPhone());
-                commentProductEntity.setMain(commentProductEntity1.getMain());
+                CommentProductEntity commentProductEntity = commentProductRepository.findOne(commentProductDTO.getId());
+                commentProductEntity.setReply(commentProductDTO.getReply());
+                commentProductEntity.setStatus(1);
+                commentProductEntity.setProductEntity(productRepository.findOne(id));
+                commentProductRepository.save(commentProductEntity);
+            }else {
+                if(!googleCaptchaService.verifyGoogleCaptcha(commentProductDTO.getCaptchaResponse()))
+                    return false;
+                CommentProductEntity commentProductEntity ;
+                commentProductEntity =commentProductConverter.toCommentProductEntity(commentProductDTO);
+                commentProductEntity.setStatus(0);
+                commentProductEntity.setProductEntity(productRepository.findOne(id));
+                commentProductRepository.save(commentProductEntity);
+                mailService.sentMailCommentProduct(commentProductDTO,id);
             }
-            commentProductEntity.setProductEntity(productEntity);
-            commentProductRepository.save(commentProductEntity);
+            return true;
         }catch (Exception e){
             e.printStackTrace();
+            return false;
         }
-
     }
 
     @Override

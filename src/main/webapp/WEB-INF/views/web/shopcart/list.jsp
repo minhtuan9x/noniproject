@@ -71,7 +71,7 @@
                 title = res.name;
                 priceStr123 = res.priceStr;
                 price123 = res.price;
-                priceTotal+=parseInt(price123);
+                priceTotal+=parseInt(price123*quantity);
                 content = '<tr>' +
                     '<td><button type="button" class="btn btn-default" onclick="removeItem('+id+')"> <i class="fa fa-times" aria-hidden="true"></i></button></td>' +
                     '<td style="color:red;"> ' +''+

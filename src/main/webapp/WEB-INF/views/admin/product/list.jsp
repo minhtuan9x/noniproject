@@ -87,8 +87,6 @@
                     </div><!-- /.row -->
 
                 </div>
-
-
             </div>
             <div class="row">
                 <div class="col-xs-12">
@@ -157,11 +155,6 @@
                                     <button class="btn btn-xs btn-default" data-toggle="tooltip"
                                             title="Xem comment" value="${item.id}" onclick="openModalComment(value)">
                                         <i class="fa fa-comment" aria-hidden="true"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-default" data-toggle="tooltip"
-                                            title="Xem Thông tin liên hệ" value="${item.id}"
-                                            onclick="openModalContact(value)">
-                                        <i class="fa fa-connectdevelop" aria-hidden="true"></i>
                                     </button>
 
                                 </td>
@@ -236,46 +229,6 @@
     </div>
 
 
-    <!-- Modal Contact-->
-    <div class="modal fade" id="contactModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Danh sách Liên Hệ</h4>
-                </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th class="center">
-                                <label class="pos-rel">
-                                    <input type="checkbox" id="selectAll3" class="ace"/>
-                                    <span class="lbl"></span>
-                                </label>
-                            </th>
-                            <th>Tên</th>
-                            <th>Số điện thoại</th>
-                            <th>Email</th>
-                            <th>Nhu cầu khách hàng</th>
-                            <th>Hành Động</th>
-                        </tr>
-                        </thead>
-                        <tbody id="bdContact">
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-default" onclick="xoa2()">Xoá</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 </div><!-- /.main-content -->
 <style>
 
@@ -307,21 +260,24 @@
                 cmts.forEach(item => {
                     let moi = "";
                     if (item.status == 0) {
-                        moi = '<p style="color:red;float: left">Bình Luận Mới</p>';
+                        moi = '<p style="color:red;float: left" id="' + item.id + "blm" + '">Bình Luận Mới</p>';
                     }
                     let strCheclCmt = '<td class="center">' +
                         '<label class="pos-rel">' +
                         '<input type="checkbox" class="ace" name="checkCmts[]" value="' + item.id + '">' +
                         '<span class="lbl"></span>' +
                         '</label>' +
-                        '</td>'
+                        '</td>';
+                    let repIn = ""
+                    if (item.reply != null)
+                        repIn = item.reply;
                     let str = '<tr>' +
                         strCheclCmt
                         + '<td>' + item.name + '</td>'
                         + '<td>' + item.phone + '</td>'
                         + '<td>' + item.email + '</td>'
                         + '<td>' + item.main + '</td>'
-                        + '<td>' + '<input id="' + item.id + "inputRep" + '" type="text" class="form-control" value="' + item.reply + '">' +
+                        + '<td>' + '<input id="' + item.id + "inputRep" + '" type="text" class="form-control" value="' + repIn + '">' +
                         moi + '<button value="' + item.id + '" onclick="xoa(this.value)" style="float: right">Del</button> <button id="' + item.id + '" style="float: right"' +
                         'onclick="reply(this.id)">Rep</button></td>'
                         + '</tr>';
@@ -348,7 +304,7 @@
             datatype: "json",
             contentType: "application/json",
             success: function (res) {
-                alert("done")
+                $("#"+value+"blm").empty()
             },
             error: function () {
                 alert("fail")
@@ -381,45 +337,6 @@
         window.location.reload()
     }
 
-    function openModalContact(value) {
-        productId = value;
-        $.ajax({
-            method: "get",
-            url: "<c:url value="/api/product/"/>+" + value,
-            datatype: "json",
-            success: function (res) {
-                let contacts = res.contactDTOS;
-                $("#bdContact").empty();
-                contacts.forEach(item => {
-                    let moi = "";
-                    if (item.status == 0) {
-                        moi = '<button id="' + item.id + 'pro" style="color:red;float: left" value="' + item.id + '" onclick="setPro(value)">Chưa xử lí</button>';
-                    } else {
-                        moi = '<button id="' + item.id + 'pro" style="color:blue;float: left" value="' + item.id + '" onclick="setPro(value)">Đã xử lí</button>';
-                    }
-                    let strCheckContact = '<td class="center">' +
-                        '<label class="pos-rel">' +
-                        '<input type="checkbox" class="ace" name="checkContacts[]" value="' + item.id + '">' +
-                        '<span class="lbl"></span>' +
-                        '</label>' +
-                        '</td>'
-                    let str = '<tr>' +
-                        strCheckContact
-                        + '<td>' + item.name + '</td>'
-                        + '<td>' + item.phone + '</td>'
-                        + '<td>' + item.email + '</td>'
-                        + '<td>' + item.needValue + '</td>'
-                        + '<td>' + moi + '</td>'
-                        + '</tr>';
-                    $("#bdContact").append(str);
-                })
-            },
-            error: function () {
-                alert("loi");
-            }
-        })
-        $("#contactModal").modal()
-    }
 
     $("#selectAll").click(function () {
         $("input[name='checkProducts[]']").prop('checked', $(this).prop('checked'));
@@ -434,41 +351,7 @@
     // $.each($("input[name='checkStaffs[]']:checked"), function () {
     //     values.push($(this).val());
     // });
-    function setPro(value) {
-        $.ajax({
-            url: "<c:url value="/api/contact/"/> " + value,
-            method: "put",
-            success: function (res) {
-                $("#" + value + "pro").css("color", "blue").text("Đã xử lí")
-            },
-            error: function () {
-                alert("fail")
-            }
-        })
-    }
 
-    function xoa2() {
-        let values = [];
-        $.each($("input[name='checkContacts[]']:checked"), function () {
-            values.push($(this).val());
-        });
-        console.log(values)
-        values.forEach(item => {
-            $.ajax({
-                url: "<c:url value="/api/contact/" />" + item,
-                method: "delete",
-                datatype: "json",
-                success: function (res) {
-
-                },
-                error: function () {
-                    alert("fail")
-                }
-            })
-        })
-        alert("Xoa Thanh Cong")
-        window.location.reload()
-    }
 
     function xoaPro(value) {
         let values = [];

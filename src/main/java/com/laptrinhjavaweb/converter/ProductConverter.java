@@ -24,6 +24,8 @@ public class ProductConverter {
     private ContactConverver contactConverver;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private DecimalFormat decimalFormat;
     public ProductEntity toProductEntity(ProductDTO productDTO){
         ProductEntity productEntity = modelMapper.map(productDTO,ProductEntity.class);
         if(productEntity.getId()==null)
@@ -34,7 +36,6 @@ public class ProductConverter {
         return productEntity;
     }
     public ProductResponse toProductRespone(ProductEntity productEntity){
-        DecimalFormat decimalFormat = new DecimalFormat("###,###");
         ProductResponse productResponse = modelMapper.map(productEntity, ProductResponse.class);
         if(productEntity.getPrice()!=null){
             productResponse.setPriceStr(decimalFormat.format(productEntity.getPrice()));
@@ -42,22 +43,19 @@ public class ProductConverter {
         return productResponse;
     }
     public ProductDTO toProductDTO(ProductEntity productEntity){
-        DecimalFormat decimalFormat = new DecimalFormat("###,###");
         ProductDTO productDTO = modelMapper.map(productEntity,ProductDTO.class);
         List<CommentProductDTO> commentProductDTOList = new ArrayList<>();
         List<ContactDTO> contactDTOS = new ArrayList<>();
+        productEntity.getCommentProductEntities().sort((o1, o2) -> (o2.getCreatedDate().toString().compareTo(o1.getCreatedDate().toString())));
         productEntity.getCommentProductEntities().forEach(item->{
             CommentProductDTO commentProductDTO = commentProductConverter.toCommentProductDTO(item);
             commentProductDTOList.add(commentProductDTO);
         });
-//        productEntity.getContactEntities().forEach(item->{
-//            ContactDTO contactDTO = contactConverver.toContactDTO(item);
-//            contactDTOS.add(contactDTO);
-//        });
+        List<CommentProductDTO> commentProductDTOListFinal = commentProductDTOList.size()>30?commentProductDTOList.subList(0,29):commentProductDTOList;
         if(productEntity.getPrice()!=null){
             productDTO.setPriceStr(decimalFormat.format(productEntity.getPrice()));
         }
-        productDTO.setCommentProductDTOS(commentProductDTOList);
+        productDTO.setCommentProductDTOS(commentProductDTOListFinal);
         productDTO.setContactDTOS(contactDTOS);
         return productDTO;
     }

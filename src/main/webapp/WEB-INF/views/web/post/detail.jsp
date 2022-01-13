@@ -91,13 +91,18 @@
                                     <input type="text" class="form-control" name="phone">
                                 </div>
                             </div>
-                        </div>
-                        <!-- <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox"> Remember me
-                            </label>
-                        </div> -->
+                            <br>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="g-recaptcha"
+                                         data-sitekey="6LfSpv4dAAAAAO22QDkStgI2uCRNosPVPyAFHEeJ">
+                                    </div>
+                                    <div id="tbf">
 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-dark">Phản Hồi</button>
                     </form>
                 </div>
@@ -169,6 +174,8 @@
             console.log(dataIn)
             let data = {};
             dataIn.forEach(item => {
+                if (item.name == "g-recaptcha-response")
+                    data["captchaResponse"] = item.value
                 data[item.name] = item.value
             })
             if (name == "" || email == "") {
@@ -177,19 +184,23 @@
                 if (comment.length <= 10) {
                     alert('Bình luận phải dài hơn 10 kí tự');
                 } else {
-                    $.ajax({
-                        url: "/api/commentpost/" + "${post.id}" + "/post",
-                        type: "post",
-                        data: JSON.stringify(data),
-                        dataType: "json",
-                        contentType: "application/json",
-                        success: function (res) {
-                            window.location.reload();
-                        },
-                        error: function () {
-                            alert("error")
-                        }
-                    })
+                    if (data.captchaResponse == "") {
+                        $("#tbf").html("<p style='color: red'>Vui lòng xác minh rằng bạn không phải robot</p>")
+                    }else {
+                        $.ajax({
+                            url: "/api/commentpost/" + "${post.id}" + "/post",
+                            type: "post",
+                            data: JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function (res) {
+                                window.location.reload();
+                            },
+                            error: function () {
+                                alert("error")
+                            }
+                        })
+                    }
                 }
             }
         })

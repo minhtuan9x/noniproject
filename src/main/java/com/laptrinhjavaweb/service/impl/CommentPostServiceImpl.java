@@ -6,6 +6,7 @@ import com.laptrinhjavaweb.entity.CommentPostEntity;
 import com.laptrinhjavaweb.repository.CommentPostRepository;
 import com.laptrinhjavaweb.repository.PostRepository;
 import com.laptrinhjavaweb.service.CommentPostService;
+import com.laptrinhjavaweb.service.GoogleCaptchaService;
 import com.laptrinhjavaweb.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,13 @@ public class CommentPostServiceImpl implements CommentPostService {
     private PostRepository postRepository;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private GoogleCaptchaService googleCaptchaService;
+
 
     @Override
     @Transactional
-    public void save(CommentPostDTO commentPostDTO,Long id) {
+    public boolean save(CommentPostDTO commentPostDTO,Long id) {
         if(commentPostDTO.getId()!=null){
             CommentPostEntity commentPostEntity = commentPostRepository.findOne(commentPostDTO.getId());
             commentPostEntity.setReply(commentPostDTO.getReply());
@@ -34,6 +38,8 @@ public class CommentPostServiceImpl implements CommentPostService {
             commentPostEntity.setPostEntity(postRepository.findOne(id));
             commentPostRepository.save(commentPostEntity);
         }else {
+            if(!googleCaptchaService.verifyGoogleCaptcha(commentPostDTO.getCaptchaResponse()))
+                return false;
             CommentPostEntity commentPostEntity ;
             commentPostEntity =commentPostConverter.toCommentPostEntity(commentPostDTO);
             commentPostEntity.setStatus(0);
@@ -41,6 +47,7 @@ public class CommentPostServiceImpl implements CommentPostService {
             commentPostRepository.save(commentPostEntity);
             mailService.sentMailCommentPost(commentPostDTO,id);
         }
+        return true;
     }
 
     @Override

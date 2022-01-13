@@ -31,21 +31,30 @@
 		<a class="text-white" href="https://mdbootstrap.com/">tuandoit.com</a>
 	</div>
 
-	<div id="modalLoad" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+
+	<div id="modalLoad" class="modal fade" 	data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog modal-dialog-centered modal-sm">
-			<div class="modal-content" style="width:1px">
-				<span class="fa fa-spinner fa-spin fa-3x"></span>
+			<div class="modal-content" style="color: black">
+					<i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
 			</div>
 		</div>
 	</div>
 	<script>
 		$(document).ajaxStart(function (){
 			$("#modalLoad").modal("show")
-		}).ajaxStop(function (){
-			$("#modalLoad").modal("hide")
 		})
+		$(document).ajaxStop(function (e){
+			$('#modalLoad').modal('hide');
+		});
 	</script>
 	<style>
+
+		.modal-content
+		{
+			background-color: rgba(110,110,109,0);
+			border-color: rgba(110,110,109,0);
+		}
+
 		.iframe-container{
 			position: relative;
 			width: 100%;

@@ -7,6 +7,15 @@ public class CommentPostDTO extends AbstractDTO {
     private String main;
     private String reply;
     private Integer status;
+    private String captchaResponse;
+
+    public String getCaptchaResponse() {
+        return captchaResponse;
+    }
+
+    public void setCaptchaResponse(String captchaResponse) {
+        this.captchaResponse = captchaResponse;
+    }
 
     public String getName() {
         return name;

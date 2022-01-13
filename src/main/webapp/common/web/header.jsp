@@ -11,8 +11,7 @@
                 <a href="tel:0367842388" style="color:black;"><i class="fa fa-phone" aria-hidden="true"></i></a>
                 <a href="mailto:caphenonidakhakt@gmail.com" style="color: black"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
                 <a href="https://www.youtube.com/channel/UCdMfvEqKQTk_QMdrd837XFg" style="color:black;"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
-                <i type="button" class="fa fa-user" aria-hidden="true"
-                   onclick="window.location.href='<c:url value="/login"/>'"></i>
+                <a href="<c:url value="/login"/>" style="color:black;"><i class="fa fa-user" aria-hidden="true"></i></a>
             </div>
         </div>
     </div>
@@ -92,6 +91,8 @@
     #td123 a{
         font-weight: 700;
     }
+
+
 </style>
 
 

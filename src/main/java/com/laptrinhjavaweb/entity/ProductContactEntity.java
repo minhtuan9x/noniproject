@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "productcontact")
 public class ProductContactEntity extends BaseEntity {
     @Column
-    private Integer quantily;
+    private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productid",nullable = false)
@@ -16,12 +16,12 @@ public class ProductContactEntity extends BaseEntity {
     @JoinColumn(name = "contactid",nullable = false)
     private ContactEntity contactEntity;
 
-    public Integer getQuantily() {
-        return quantily;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setQuantily(Integer quantily) {
-        this.quantily = quantily;
+    public void setQuantity(Integer quantily) {
+        this.quantity = quantily;
     }
 
     public ProductEntity getProductEntity() {

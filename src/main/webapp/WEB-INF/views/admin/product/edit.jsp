@@ -27,10 +27,8 @@
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="<c:url value="/admin/home"/> ">Trang chủ</a>
                 </li>
-                <li class="active">Chi tiết building</li>
+                <li class="active">Chi tiết đơn hàng</li>
             </ul><!-- /.breadcrumb -->
-
-
         </div>
 
         <div class="page-content">
@@ -128,6 +126,8 @@
             }
         })
     })
+
+
 
 </script>
 </body>

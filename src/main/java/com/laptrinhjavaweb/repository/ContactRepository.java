@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ContactRepository extends ContactRepositoryCustom, JpaRepository<ContactEntity,Long> {
 //    List<ContactEntity> findByProductEntityId(Long productID);
+    List<Long> deleteByIdIn(List<Long> ids);
 }

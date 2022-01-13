@@ -36,6 +36,9 @@
     <link rel="icon" href=
             "/img/logo.png"
           type="image/x-icon">
+
+    <!-- Auto detecting language -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
 <!-- Navigation -->
