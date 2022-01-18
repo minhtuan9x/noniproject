@@ -22,8 +22,8 @@
         </div>
     </div>
 
-    <c:forEach items="${videos}" var="item">
-        <c:if test="${(videos.indexOf(item) % 3) == 0}">
+    <c:forEach items="${videos.listResult}" var="item">
+        <c:if test="${(videos.listResult.indexOf(item) % 3) == 0}">
             <div class="row" style="text-align: center">
         </c:if>
         <div class="col-md-4">
@@ -41,23 +41,32 @@
                 <h5 style="padding-left: 20px;padding-right: 20px;font-size: 15px"> ${item.title}</h5>
             </span>
         </div>
-        <c:if test="${(videos.indexOf(item) % 3) == 2}">
+        <c:if test="${(videos.listResult.indexOf(item) % 3) == 2}">
             </div>
         </c:if>
     </c:forEach>
-    <!-- Modal -->
-    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <!-- 16:9 aspect ratio -->
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="" id="video" allowscriptaccess="always"
-                            allow="autoplay" allowfullscreen></iframe>
-                </div>
+
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <!-- 16:9 aspect ratio -->
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="" id="video" allowscriptaccess="always"
+                        allow="autoplay" allowfullscreen></iframe>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script>
@@ -75,7 +84,21 @@
         $('#myModal').on('hide.bs.modal', function (e) {
             $("#video").attr('src', $videoSrc);
         })
+        $(function () {
+            window.pagObj = $('#pagination').twbsPagination({
+                startPage: ${videos.page},
+                totalPages:${videos.totalPage},
+                visiblePages: 5,
+                first:'Đầu',
+                prev:'<<',
+                next:'>>',
+                last:'Cuối',
+            }).on('page', function (event, page) {
+                console.info(page + ' (from event listening)');
+                window.location.href="<c:url value="/video/list?page="/>"+page;
 
+            });
+        });
 
     });
 </script>
@@ -101,29 +124,30 @@
         display: table;
     }
 
-    div.ytImgThumbBox{
+    div.ytImgThumbBox {
         position: relative !important;
         width: 100% !important;
         height: 100% !important;
         overflow: hidden;
     }
 
-    div.ytImgThumbPlay{
+    div.ytImgThumbPlay {
         position: absolute !important;
         top: 50% !important;
         left: 50% !important;
-        width:48px !important;
-        height:48px !important;
+        width: 48px !important;
+        height: 48px !important;
         margin: -24px 0 0 -24px !important;
     }
 
-    img.ytImgThumbImg{
+    img.ytImgThumbImg {
         /*width: 100% !important;*/
         /*height: 100% !important;*/
         /*margin: -9.5% 0px -12%;*/
         border-radius: 5px;
     }
-    .ytImgThumbPlay:hover{
+
+    .ytImgThumbPlay:hover {
         -ms-transform: scale(2); /* IE 9 */
         -webkit-transform: scale(2); /* Safari 3-8 */
         transform: scale(2);

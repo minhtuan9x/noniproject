@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<div class="container" >
+<div class="container">
     <div class="row">
         <div class="col-md-12">
             <ul class="breadcrumb" style="background-color: rgba(110,110,109,0.05);">
@@ -22,10 +22,12 @@
             </ul>
         </div>
     </div>
-    <c:forEach items="${posts}" var="item">
+    <div>
+    <c:forEach items="${postAbstract.listResult}" var="item">
         <div class="row" style="margin-left: 15%;margin-right: 15%" id="list123">
             <div class="col-md-4" style="text-align: right">
-                <img type="button" onclick="window.location.href='/post/${item.id}/detail'" style="border-radius: 2px" src="${item.imgTitle}" alt="">
+                <img type="button" onclick="window.location.href='/post/${item.id}/detail'" style="border-radius: 2px"
+                     src="${item.imgTitle}" alt="">
             </div>
             <div class="col-md-8">
                 <div class="row">
@@ -42,7 +44,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <p style="font-size: 90%;color: #5a5a5a">Đăng bởi: ${item.createdBy} - Ngày
-                            đăng: ${item.createdDate}</p>
+                            đăng: ${item.createdDateStr}</p>
                     </div>
                 </div>
             </div>
@@ -50,13 +52,22 @@
         <br>
         <br>
     </c:forEach>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pagination justify-content-center" id="pagination"></ul>
+        </div>
+    </div>
 </div>
 <style>
     img {
         width: 200px;
         height: 200px;
     }
-    #list123{
+
+    #list123 {
         background-color: white;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
         0 2px 2px rgba(0, 0, 0, 0.12),
@@ -64,13 +75,33 @@
         0 8px 8px rgba(0, 0, 0, 0.12),
         0 16px 16px rgba(0, 0, 0, 0.12);
     }
-    .container{
-        background-color: rgba(172,174,59,0.03);
+
+    .container {
+        background-color: rgba(172, 174, 59, 0.03);
     }
-    body{
-        background-color: rgba(110,110,109,0.05);
+
+    body {
+        background-color: rgba(110, 110, 109, 0.05);
     }
 </style>
+
+<script>
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            startPage: ${postAbstract.page},
+            totalPages:${postAbstract.totalPage},
+            visiblePages: 5,
+            first:'Đầu',
+            prev:'<<',
+            next:'>>',
+            last:'Cuối',
+        }).on('page', function (event, page) {
+            console.info(page + ' (from event listening)');
+            window.location.href="<c:url value="/post/list?page="/>"+page;
+
+        });
+    });
+</script>
 </body>
 
 </html>

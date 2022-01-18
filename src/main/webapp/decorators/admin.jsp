@@ -22,6 +22,10 @@
 	<link rel="icon" href=
 			"/img/logo.png"
 		  type="image/x-icon">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+
+	<script type='text/javascript' src="ckeditor/ckeditor.js"></script>
 </head>
 <body class="no-skin">
 	<!-- header -->

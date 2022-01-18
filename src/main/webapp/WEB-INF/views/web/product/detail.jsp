@@ -24,12 +24,36 @@
     </div>
     <div class="row">
         <div class="col-md-5">
-            <img style="width: 100%;height: 450px" src="${product.imgTitle}">
+            <%--            <img style="width: 100%;height: 450px" src="${product.imgTitle}">--%>
+            <div class="row" id="showImg">
+                <div class="col-md-12">
+                    <img id="expandedImg" style="width:100%">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <c:forEach var="itemImg" items="${product.imgLink}">
+                        <div class="column">
+                            <img src="${itemImg}" style="width:100%" onclick="myFunction(this);">
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+
         </div>
         <div class="col-md-7">
             <h1>[${product.mass}]${product.name}</h1>
             <hr>
             <h5>${product.priceStr}đ</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul style="list-style-type:circle">
+                        <li><b>Tên Sản Phẩm: </b>${product.name}</li>
+                        <li><b>Khối Lượng: </b>${product.mass}</li>
+                        <li><b>Giá: </b>${product.priceStr} VNĐ</li>
+                    </ul>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-3">
                     <div class="input-group">
@@ -55,6 +79,23 @@
                     </button>
                     <button type="button" class="btn btn-danger" id="nowCart" value="${product.id}">Mua Ngay
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <br>
+                        <hr>
+                        <h2 style="color: black">Mô Tả Sản Phẩm</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        ${product.description}
+                    </div>
                 </div>
             </div>
         </div>
@@ -232,17 +273,30 @@
             }
         })
     })
-
-    // grecaptcha.ready(function() {
-    //     grecaptcha.execute('reCAPTCHA_site_key', {action: 'homepage'}).then(function(token) {
-    //     ...
-    //     });
-    // });
+    let expandImg = document.getElementById("expandedImg");
+    expandImg.src = "${product.imgTitle}";
+    expandImg.parentElement.style.display = "block";
+    function myFunction(imgs) {
+        expandImg.src = imgs.src;
+        expandImg.parentElement.style.display = "block";
+    }
 
 </script>
 <style>
+    .column {
+        float: left;
+        width: 25%;
+        padding: 10px;
+    }
+
+    /* Style the images inside the grid */
+    .column img {
+        opacity: 0.8;
+        cursor: pointer;
+    }
+
+    /*-------------------*/
     form {
-        background-color: #ecf2f9;
         padding: 25px;
         border-radius: 1%;
     }

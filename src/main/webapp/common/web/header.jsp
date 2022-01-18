@@ -19,7 +19,7 @@
         <img type="button" class="my-0 mr-md-auto font-weight-normal" id="logo" src="/img/logo.png"
              style="width: 100px;" onclick="window.location.href='<c:url value="/trang-chu"/>'">
         <nav class="my-2 my-md-0 mr-md-3" id="td123">
-            <a class="p-2 text-dark" href="#">GIỚI THIỆU</a>
+            <a class="p-2 text-dark" href="<c:url value="/introduce" />">GIỚI THIỆU</a>
             <a class="p-2 text-dark" href="<c:url value="/product/list" />">SẢN PHẨM</a>
             <a class="p-2 text-dark dropdown-toggle" href="#"
                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">TÌM HIỂU</a>
@@ -96,7 +96,7 @@
 </style>
 
 
-<%--<%@ page import="com.laptrinhjavaweb.security.utils.SecurityUtils" %>--%>
+<%--<%@ page import="com.nonicafe.security.utils.SecurityUtils" %>--%>
 <%--<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">--%>
 <%--	<div class="container">--%>
 <%--		<a class="navbar-brand" href="#">Start Bootstrap</a>--%>

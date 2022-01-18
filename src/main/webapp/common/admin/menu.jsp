@@ -10,10 +10,10 @@
     </script>
     <div class="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large">
-            <button class="btn btn-success" onclick="window.location.href='/admin/home'">
+            <button type="button" class="btn btn-success" onclick="window.location.href='/admin/home'">
                 <i class="ace-icon fa fa-home"></i>
             </button>
-            <button class="btn btn-info" onclick="window.location.href='/trang-chu'">
+            <button type="button" class="btn btn-info" onclick="window.location.href='/trang-chu'">
                 <i class="ace-icon fa fa-rub"></i>
             </button>
         </div>
@@ -120,7 +120,7 @@
     <ul class="nav nav-list">
         <li class="">
             <a href="#" class="dropdown-toggle">
-                <i class="menu-icon fa fas fa-users"></i>
+                <i class="menu-icon fa fas fa-buysellads"></i>
                 <span class="menu-text">QL đơn hàng</span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
@@ -130,6 +130,44 @@
                     <a href='<c:url value='/admin/contact-list'/>'>
                         <i class="menu-icon fa fa-caret-right"></i>
                         DS đơn hàng
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="nav nav-list">
+        <li class="">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fas fa-photo"></i>
+                <span class="menu-text">QL Hình Ảnh</span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+            <ul class="submenu">
+                <li class="">
+                    <a href='<c:url value='/admin/image-list'/>'>
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Danh sách Hình Ảnh
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="nav nav-list">
+        <li class="">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fas fa-paper-plane"></i>
+                <span class="menu-text">QL Giới Thiệu</span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+            <ul class="submenu">
+                <li class="">
+                    <a href='<c:url value='/admin/introduce-detail?id=2'/>'>
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Chi Tiết Bài Giới Thiệu
                     </a>
                     <b class="arrow"></b>
                 </li>

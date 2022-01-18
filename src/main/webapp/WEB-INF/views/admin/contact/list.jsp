@@ -130,7 +130,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="item" items="${contacts}">
+                        <c:forEach var="item" items="${contacts.listResult}">
                             <tr>
                                 <td class="center">
                                     <label class="pos-rel">
@@ -138,7 +138,7 @@
                                         <span class="lbl"></span>
                                     </label>
                                 </td>
-                                <td>${item.createdDate}</td>
+                                <td>${item.createdDateStr}</td>
                                 <td>${item.name}</td>
                                 <td>${item.phone}</td>
                                 <td>${item.process}</td>
@@ -158,6 +158,13 @@
                         </tbody>
                     </table>
                 </div><!-- /.span -->
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="pagination justify-content-center" id="pagination"></ul>
+                </div>
             </div>
         </div><!-- /.page-content -->
     </div>
@@ -195,6 +202,22 @@
     }
 </style>
 <script>
+    if("${contacts.page}"=="")
+        $('#pagination').remove()
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            startPage: ${contacts.page},
+            totalPages:${contacts.totalPage},
+            visiblePages: 5,
+            first:'Đầu',
+            prev:'<<',
+            next:'>>',
+            last:'Cuối',
+        }).on('page', function (event, page) {
+            console.info(page + ' (from event listening)');
+            window.location.href="<c:url value="/admin/contact-list?page="/>"+page;
+        });
+    });
     $("#selectAll").click(function () {
         $("input[name='checkProducts[]']").prop('checked', $(this).prop('checked'));
     });

@@ -69,6 +69,7 @@
                                 </c:if>
                             </c:forEach>
                         </div>
+                    </div>
                         <!-- Modal -->
                         <div class="modal fade " id="myModal" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel"
@@ -99,42 +100,50 @@
         e.preventDefault();
         let url123 = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyCUCv-kqTzk3EeRySln9SL9xv4YQiYqJzc&channelId=UCdMfvEqKQTk_QMdrd837XFg&part=snippet,id&order=date&maxResults=50'
         let dataReq = [];
+        <%--$.ajax({--%>
+        <%--    type: "GET",--%>
+        <%--    url: url123,--%>
+        <%--    crossDomain: true,--%>
+        <%--    datatype: "json",--%>
+        <%--    success: function (res) {--%>
+        <%--        let arrYou = res.items;--%>
+        <%--        arrYou.forEach(item => {--%>
+        <%--            let itemList = {--%>
+        <%--                "title": item.snippet.title,--%>
+        <%--                "link": item.id.videoId,--%>
+        <%--                "thumbnail": item.snippet.thumbnails.medium.url--%>
+        <%--            }--%>
+        <%--            dataReq.push(itemList)--%>
+        <%--        })--%>
+        <%--        console.log(dataReq)--%>
+        <%--        $.ajax({--%>
+        <%--            url: "<c:url value="/api/video"/>",--%>
+        <%--            type: "POST",--%>
+        <%--            data: JSON.stringify(dataReq),--%>
+        <%--            datatype: "json",--%>
+        <%--            contentType: "application/json",--%>
+        <%--            success: function () {--%>
+        <%--                window.location.reload()--%>
+        <%--            },--%>
+        <%--            error: function () {--%>
+        <%--                alert("fail ahihi")--%>
+        <%--            }--%>
+        <%--        })--%>
+        <%--    },--%>
         $.ajax({
-            type: "GET",
-            url: url123,
-            crossDomain: true,
+            url: "<c:url value="/api/video"/>",
+            type: "POST",
             datatype: "json",
-            success: function (res) {
-                let arrYou = res.items;
-                arrYou.forEach(item => {
-                    let itemList = {
-                        "title": item.snippet.title,
-                        "link": item.id.videoId,
-                        "thumbnail": item.snippet.thumbnails.medium.url
-                    }
-                    dataReq.push(itemList)
-                })
-                console.log(dataReq)
-                $.ajax({
-                    url: "<c:url value="/api/video"/>",
-                    type: "POST",
-                    data: JSON.stringify(dataReq),
-                    datatype: "json",
-                    contentType: "application/json",
-                    success: function () {
-                        window.location.reload()
-                    },
-                    error: function () {
-                        alert("fail ahihi")
-                    }
-                })
+            contentType: "application/json",
+            success: function () {
+                window.location.reload()
             },
-            error: function (res) {
-                console.log(res)
-                alert("loi youtube")
+            error: function () {
+                alert("fail ahihi")
             }
         })
     })
+
 </script>
 <style>
     .ytImgContainer img {

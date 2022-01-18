@@ -22,13 +22,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-8" style="border-right: 1px solid rgba(222,222,221,0.38);">
+        <div class="col-md-9" style="border-right: 1px solid rgba(222,222,221,0.38);">
             <div class="row" style="text-align: center">
                 <div class="col-md-12">
                     <h1>${post.title}</h1>
                     <br>
                     <p style="font-size: 90%;color: #5a5a5a">Đăng bởi: ${post.createdBy} - Ngày
-                        đăng: ${post.createdDate}</p>
+                        đăng: ${post.createdDateStr}</p>
                     <hr>
                 </div>
             </div>
@@ -109,7 +109,7 @@
             </div>
             <br>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="row">
                 <div class="col-md-12">
                     <h5>BÀI VIẾT MỚI</h5>
@@ -117,7 +117,7 @@
                     <c:forEach var="item" items="${postByDates}">
                         <a style="color: darkred" href="/post/${item.id}/detail">${item.title}</a>
                         <p style="font-size: 70%;color: #5a5a5a">Đăng bởi: ${post.createdBy} - Ngày
-                            đăng: ${post.createdDate}</p>
+                            đăng: ${post.createdDateStr}</p>
                         <hr style="width: 30px">
                     </c:forEach>
                 </div>
@@ -130,7 +130,6 @@
 
 <style>
     form {
-        background-color: #ecf2f9;
         padding: 25px;
         border-radius: 1%;
     }

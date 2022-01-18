@@ -121,9 +121,7 @@
                             </th>
                             <th>Tên Sản Phẩm</th>
                             <th>Giá sản phẩm</th>
-                            <th>Thông tin sản phẩm</th>
                             <th>Ảnh đại diện</th>
-                            <th>Link Ảnh</th>
                             <th>Hành động</th>
                         </tr>
                         </thead>
@@ -138,9 +136,7 @@
                                 </td>
                                 <td>${item.name}</td>
                                 <td>[${item.mass}]${item.priceStr}đ</td>
-                                <td>${item.description}</td>
-                                <td><img src="${item.imgTitle}"></td>
-                                <td>${item.imgLink}</td>
+                                <td><img src="${item.imgTitle}" style="width: 100px;height: 100px"></td>
                                 <td style="width: 150px">
                                     <button class="btn btn-xs btn-dark" data-toggle="tooltip"
                                             title="Sửa thông tin sản phẩm" value="${item.id}"
@@ -154,7 +150,7 @@
                                     </button>
                                     <button class="btn btn-xs btn-default" data-toggle="tooltip"
                                             title="Xem comment" value="${item.id}" onclick="openModalComment(value)">
-                                        <i class="fa fa-comment" aria-hidden="true"></i>
+                                        <i class="fa fa-comment" aria-hidden="true"></i><span class="badge badge-danger">${item.totalNewComment}</span>
                                     </button>
 
                                 </td>

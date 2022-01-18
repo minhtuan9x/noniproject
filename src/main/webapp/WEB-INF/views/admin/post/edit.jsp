@@ -57,14 +57,33 @@ To change this template use File | Settings | File Templates.
                             <label class="col-sm-3 control-label no-padding-right">
                                 Ảnh bìa</label>
                             <div class="col-sm-9">
-                                <form:input path="imgTitle" cssClass="form-control"/>
+                                <c:if test="${modelPost.imgTitle!=null}">
+                                    <img src="${modelPost.imgTitle}" style="width: 100px;height: 100px">
+                                </c:if>
+                                <c:if test="${modelPost.imgTitle==null}">
+                                    <b>Không Có</b>
+                                </c:if>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">
+                                Up Ảnh Bìa</label>
+                            <div class="col-sm-9">
+                                <form:input path="file" type="file" cssClass="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">
+                                Nội dung ngắn giới thiệu</label>
+                            <div class="col-sm-9">
+                                <form:textarea path="sortContent" cssClass="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">
                                 Nội dung</label>
                             <div class="col-sm-9">
-                                <form:input path="content" cssClass="form-control"/>
+                                <form:textarea path="content" id="content" cssClass="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -72,11 +91,11 @@ To change this template use File | Settings | File Templates.
                             </label>
                             <div class="col-sm-9">
                                 <c:if test="${modelPost.id!=null}">
-                                    <button type="submit" class="btn btn-primary" id="btnAddBuilding">Update sản phẩm
+                                    <button type="submit" class="btn btn-primary" id="btnAddBuilding">Cập nhập bài viết
                                     </button>
                                 </c:if>
                                 <c:if test="${modelPost.id==null}">
-                                    <button type="submit" class="btn btn-primary" id="btnAddBuilding">Thêm sản phẩm
+                                    <button type="submit" class="btn btn-primary" id="btnAddBuilding">Thêm bài viết mới
                                     </button>
                                 </c:if>
                                 <button type="button" class="btn btn-primary">Huỷ</button>
@@ -89,29 +108,34 @@ To change this template use File | Settings | File Templates.
     </div>
 </div><!-- /.main-content -->
 <script>
-    $("#formEdit").submit(function (e){
+    let content = "";
+    content = CKEDITOR.replace('content');
+    $("#formEdit").submit(function (e) {
         e.preventDefault();
-        let formArr = $(this).serializeArray();
-        let data={}
-        formArr.forEach(item=>{
-            data[item.name] = item.value
-        })
-        data["id"]=${modelPost.id}
-            console.log(data)
+        let description = content.getData();
+        let formArr = $(this)[0]
+        let data = new FormData(formArr);
+        data.append("id","${modelPost.id}")
+        data.delete("content")
+        data.append("content",description)
+        console.log(data)
         $.ajax({
-            url:"<c:url value="/api/post" />",
-            method:"post",
-            data:JSON.stringify(data),
-            datatype:"json",
-            contentType:"application/json",
-            success:function (res){
-                if(${modelPost.id==null}){
-                    window.location.href="<c:url value="/admin/post-list"/> "
-                }else{
+            url: "<c:url value="/api/post" />",
+            method: "post",
+            enctype: 'multipart/form-data',
+            data:data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 1000000,
+            success: function (res) {
+                if (${modelPost.id==null}) {
+                    window.location.href = "<c:url value="/admin/post-list"/> "
+                } else {
                     window.location.reload()
                 }
             },
-            error:function (){
+            error: function () {
                 alert("fail")
             }
         })

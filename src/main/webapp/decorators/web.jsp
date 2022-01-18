@@ -39,6 +39,11 @@
 
     <!-- Auto detecting language -->
     <script src='https://www.google.com/recaptcha/api.js'></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+<%--    page--%>
+
 </head>
 <body>
 <!-- Navigation -->

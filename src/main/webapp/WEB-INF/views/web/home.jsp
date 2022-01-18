@@ -31,7 +31,7 @@
                     hữu
                     cơ: phần lớn sử dụng vỏ của quả cà phê sau khi đã xay bóc lấy nhân và được ủ thành phân vi sinh để
                     bón
-                    cho cây).</p>
+                    cho cây),<a href="<c:url value="/introduce"/> ">Xem giới thiệu về cà phê noni để biết nhiều hơn tại đây !!!</a></p>
                 <br>
                 <br>
                 <button style="border-radius: 5px" type="button" class="btn btn-dark">Tìm hiểu về cà phê nguyên chất >
@@ -63,7 +63,7 @@
                                     </div>
                                     <div>
                                         <br>
-                                        <p style="color: #1a1a1a;font-weight: bold;">${item.title}đ</p>
+                                        <p style="color: #1a1a1a;font-weight: bold;">${item.title}</p>
                                     </div>
                                 </div>
                             </div>

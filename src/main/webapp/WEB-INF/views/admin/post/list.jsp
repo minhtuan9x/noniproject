@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="widget-box">
                     <div class="widget-header">
-                        <h4 class="widget-title">Tìm sản phẩm</h4>
+                        <h4 class="widget-title">Tìm bài viết</h4>
                         <div class="widget-toolbar">
                             <a href="#" data-action="collapse">
                                 <i class="ace-icon fa fa-chevron-up"></i>
@@ -51,7 +51,7 @@
                                         <div class="col-xs-12 ">
                                             <!-- PAGE CONTENT BEGIN -->
                                             <div class="col-md-12">
-                                                <label><b>Title</b></label>
+                                                <label><b>Tên bài viết</b></label>
                                                 <form:input path="title" cssClass="form-control"/>
                                             </div>
                                             <!-- PAGE CONTENT ENDS -->
@@ -102,12 +102,13 @@
                             </th>
                             <th>Title</th>
                             <th>Ảnh Bìa</th>
-                            <th>Nội dung</th>
+                            <th>Giới Thiệu</th>
+                            <th>Tổng Lượt Xem</th>
                             <th>Hành động</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="item" items="${modelPost}">
+                        <c:forEach var="item" items="${modelPost.listResult}">
                             <tr>
                                 <td class="center">
                                     <label class="pos-rel">
@@ -116,8 +117,9 @@
                                     </label>
                                 </td>
                                 <td>${item.title}</td>
-                                <td><img src="${item.imgTitle}"></td>
-                                <td>${item.content}</td>
+                                <td><img src="${item.imgTitle}" style="width: 200px;height: 200px"></td>
+                                <td>${item.sortContent}</td>
+                                <td>${item.totalView}</td>
                                 <td style="width: 150px">
                                     <button class="btn btn-xs btn-dark" data-toggle="tooltip"
                                             title="Sửa thông tin sản phẩm" value="${item.id}"
@@ -131,7 +133,7 @@
                                     </button>
                                     <button class="btn btn-xs btn-default" data-toggle="tooltip"
                                             title="Xem comment" value="${item.id}" onclick="openModalComment(value)">
-                                        <i class="fa fa-comment" aria-hidden="true"></i>
+                                        <i class="fa fa-comment" aria-hidden="true"></i></i><span class="badge badge-danger">${item.totalNewComment}</span>
                                     </button>
                                 </td>
                             </tr>
@@ -140,6 +142,12 @@
                     </table>
                 </div><!-- /.span -->
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="pagination justify-content-center" id="pagination"></ul>
+                </div>
+            </div>
+
         </div><!-- /.page-content -->
     </div>
 </div><!-- /.main-content -->
@@ -153,7 +161,7 @@
                 <h4 class="modal-title">Xác nhận xoá</h4>
             </div>
             <div class="modal-body">
-                <p>Bạn có muốn xoá Building đã chọn ????</p>
+                <p>Bạn có muốn xoá các bài viết đã chọn ????</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -232,7 +240,7 @@
     function xoaPost() {
         let values = [];
         if (idOne != null)
-            values.push(value);
+            values.push(idOne);
         $.each($("input[name='checkPosts[]']:checked"), function () {
             values.push($(this).val());
         });
@@ -342,6 +350,22 @@
         })
         window.location.reload()
     }
+
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            startPage: ${modelPost.page},
+            totalPages:${modelPost.totalPage},
+            visiblePages: 5,
+            first:'Đầu',
+            prev:'<<',
+            next:'>>',
+            last:'Cuối',
+        }).on('page', function (event, page) {
+            console.info(page + ' (from event listening)');
+            window.location.href="<c:url value="/admin/post-list?page="/>"+page;
+
+        });
+    });
 </script>
 </body>
 </html>
