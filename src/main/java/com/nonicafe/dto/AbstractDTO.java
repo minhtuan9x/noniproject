@@ -11,9 +11,9 @@ public class AbstractDTO<T> implements Serializable {
 
     private Long id;
     private Date createdDate;
+    private String createDateStr;
     private String createdBy;
     private Date modifiedDate;
-    private String createdDateStr;
     private String modifiedBy;
     private int maxPageItems = 10;
     private int page = 1;
@@ -25,13 +25,14 @@ public class AbstractDTO<T> implements Serializable {
     private Integer totalItem;
     private String searchValue;
 
-    public String getCreatedDateStr() {
-        return createdDateStr;
+    public String getCreateDateStr() {
+        return createDateStr;
     }
 
-    public void setCreatedDateStr(String createdDateStr) {
-        this.createdDateStr = createdDateStr;
+    public void setCreateDateStr(String createDateStr) {
+        this.createDateStr = createDateStr;
     }
+
 
     public Long getId() {
         return id;

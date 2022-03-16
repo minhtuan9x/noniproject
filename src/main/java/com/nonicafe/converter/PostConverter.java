@@ -48,7 +48,7 @@ public class PostConverter {
 
     public PostDTO toPostDTO(PostEntity postEntity) {
         PostDTO postDTO = modelMapper.map(postEntity, PostDTO.class);
-        postDTO.setCreatedDateStr(DateUtils.toDateStr(postDTO.getCreatedDate()));
+        postDTO.setCreateDateStr(DateUtils.toDateStr(postDTO.getCreatedDate()));
         postDTO.setTotalNewComment((int) postEntity.getCommentPostEntities()
                 .stream().filter(item->!ValidateInputUtil.isValid(item.getReply())).count());
         List<CommentPostDTO> commentPostDTOS = new ArrayList<>();

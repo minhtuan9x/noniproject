@@ -11,33 +11,7 @@
 <div>
     <div class="container">
         <div class="row">
-            <div class="col-md-5 col-sm-0">
-                <img style="width: 100%;height: 100%;" src="img/home/anh1.png">
-            </div>
-            <div class="col-md-7 col-sm-12">
-                <br>
-                <br>
-                <br>
-                <h1 style="font-family: fantasy"> CÀ PHÊ NONI </h1>
-                <br>
-                <p style="color:#5a5a5a">Cà phê No Ni là cà phê gia đình tọa lạc tại Thôn 1, Xã Đắk Mar, Huyện Đắk Hà,
-                    Tỉnh
-                    Kon Tum. Nơi đây là xứ
-                    sở bạt ngàn của các nhà vườn trồng cà phê lớn nhất tại Tỉnh Kon Tum. Cà phê No Ni với phương châm
-                    đưa cà
-                    phê nguyên chất, cà phê sạch an toàn đến với người tiêu dùng. Cây cà phê được gia đình tự trồng và
-                    bón
-                    bằng phân hữu cơ nhằm đảm bảo sau khi thu hoạch hạt cà phê luôn giữ được hương vị tự nhiên ( phân
-                    hữu
-                    cơ: phần lớn sử dụng vỏ của quả cà phê sau khi đã xay bóc lấy nhân và được ủ thành phân vi sinh để
-                    bón
-                    cho cây),<a href="<c:url value="/introduce"/> ">Xem giới thiệu về cà phê noni để biết nhiều hơn tại đây !!!</a></p>
-                <br>
-                <br>
-                <button style="border-radius: 5px" type="button" class="btn btn-dark">Tìm hiểu về cà phê nguyên chất >
-                </button>
-                <button style="border-radius: 5px" type="button" class="btn btn-dark">Xem sản phẩm ></button>
-            </div>
+            ${intro.content}
         </div>
         <br>
         <br>
@@ -170,11 +144,11 @@
         0 16px 16px rgba(0, 0, 0, 0.12);
     }
 
-    #sp:hover {
-        -ms-transform: scale(1.1); /* IE 9 */
-        -webkit-transform: scale(1.1); /* Safari 3-8 */
-        transform: scale(1.1);
-    }
+    /*#sp:hover {*/
+    /*    -ms-transform: scale(1.1); !* IE 9 *!*/
+    /*    -webkit-transform: scale(1.1); !* Safari 3-8 *!*/
+    /*    transform: scale(1.1);*/
+    /*}*/
 
     img {
         height: 200px;

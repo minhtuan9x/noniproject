@@ -98,15 +98,6 @@
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </button>
                     </div>
-
-                    <div class="pull-right">
-                        <button class="btn btn-white btn-info btn-bold " data-toggle="tooltip"
-                                title="Thêm Toà Nhà"
-                                onclick="window.location.href='<c:url value="/admin/product-edit"/>'">
-                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                        </button>
-                    </div>
-
                 </div>
             </div>
             <br/>
@@ -134,11 +125,11 @@
                             <tr>
                                 <td class="center">
                                     <label class="pos-rel">
-                                        <input type="checkbox" class="ace" name="checkProducts[]" value="${item.id}">
+                                        <input type="checkbox" class="ace" name="checkContacts[]" value="${item.id}">
                                         <span class="lbl"></span>
                                     </label>
                                 </td>
-                                <td>${item.createdDateStr}</td>
+                                <td>${item.createDateStr}</td>
                                 <td>${item.name}</td>
                                 <td>${item.phone}</td>
                                 <td>${item.process}</td>
@@ -219,7 +210,7 @@
         });
     });
     $("#selectAll").click(function () {
-        $("input[name='checkProducts[]']").prop('checked', $(this).prop('checked'));
+        $("input[name='checkContacts[]']").prop('checked', $(this).prop('checked'));
     });
     let idDelOne=null;
     function openModal(value) {
@@ -230,7 +221,7 @@
         let values = [];
         if (idDelOne != null)
             values.push(idDelOne);
-        $.each($("input[name='checkProducts[]']:checked"), function () {
+        $.each($("input[name='checkContacts[]']:checked"), function () {
             values.push($(this).val());
         });
         console.log(values)

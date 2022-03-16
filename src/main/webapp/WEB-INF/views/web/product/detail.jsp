@@ -27,7 +27,7 @@
             <%--            <img style="width: 100%;height: 450px" src="${product.imgTitle}">--%>
             <div class="row" id="showImg">
                 <div class="col-md-12">
-                    <img id="expandedImg" style="width:100%">
+                    <img id="expandedImg" style="height:300px;width:100%">
                 </div>
             </div>
             <div class="row">
@@ -108,7 +108,7 @@
             <ul class="list-group" id="list2">
                 <c:forEach items="${product.commentProductDTOS}" var="item">
                     <li class="list-group-item list-group-item-light"><b>Tên Khách Hàng: </b>${item.name}
-                        - ${item.createdDate}</li>
+                        - ${item.createDateStr}</li>
                     <li class="list-group-item list-group-item-light"><b>Bình Luận: </b>${item.main}</li>
                     <c:if test="${item.reply!=null}">
                         <li class="list-group-item list-group-item-text"><b>Phản Hồi Từ Admin: </b>${item.reply}
@@ -136,23 +136,23 @@
                     <div class="form-row">
                         <div class="col-md-12">
                             <label>Bình luận</label>
-                            <textarea class="form-control" rows="3" name="main"></textarea>
+                            <textarea class="form-control" rows="3" name="main" id="main"></textarea>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6">
                             <label>Tên*</label>
-                            <input type="text" class="form-control" name="name">
+                            <input type="text" class="form-control" name="name" id="name">
                         </div>
                         <div class="col-md-6">
                             <label>Email*</label>
-                            <input type="email" class="form-control" name="email">
+                            <input type="email" class="form-control" name="email" id="email">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-12">
                             <label>Số điện thoại</label>
-                            <input type="text" class="form-control" name="phone">
+                            <input type="text" class="form-control" name="phone" id="phone">
                         </div>
                     </div>
                     <br>
@@ -236,9 +236,9 @@
         $("#formfeedback").submit(function (e) {
             e.preventDefault()
             let dataIn = $("#formfeedback").serializeArray()
-            let name = $("input[name='name']").val()
-            let email = $("input[name='email']").val()
-            let comment = $("textarea[name='main']").val()
+            let name = $("#name").val()
+            let email = $("#email").val()
+            let comment = $("#main").val()
             console.log(dataIn)
             let data = {};
             dataIn.forEach(item => {

@@ -60,6 +60,7 @@
         formData.forEach(item=>{
             data[item.name] = item.value
         })
+        data["id"] = ${introduce.id};
         data["content"] = content.getData();
         $.ajax({
             url:"<c:url value="/api/introduce"/> ",

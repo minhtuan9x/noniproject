@@ -59,6 +59,10 @@
                             </div>
                         </div>
 
+                        <div class="alert alert-success">
+                            <strong>Đặt Hàng Thành Công!</strong> Nhân Viên Sẽ Liên Hệ Lại Với Bạn Để Xác Nhận!!!
+                        </div>
+
                     </form:form>
                 </div>
             </div>
@@ -158,7 +162,7 @@
     $("#bd").append(a)
     if (a != "")
         $("#dathang").prop('disabled', true);
-
+    $(".alert").hide()
     $("#xndathang").click(function (e) {
         e.preventDefault()
         let dataForm = $("#formDatHang").serializeArray();
@@ -177,15 +181,20 @@
         }
         data["productIdRequests"] = productIds;
         console.log(data);
-        if(data.name==""){
+        if (data.name == "") {
             alert("Tên Không Được Để Trống !!!")
-        }else{
-            if(data.phone==""){
+        } else {
+            let regexPhone = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+            if(regexPhone.test(data.phone)==false){
+                alert("Sai Định Dạng Số Điện Thoại !!!")
+                return;
+            }
+            if (data.phone == "") {
                 alert("Số Điện Thoại Không Được Để Trống !!!")
-            }else{
-                if(data.captchaResponse==""){
+            } else {
+                if (data.captchaResponse == "") {
                     alert("Xác Minh Tôi Không Phải Là Robot!!!")
-                }else {
+                } else {
                     $.ajax({
                         url: "/api/contact",
                         type: "post",
@@ -194,8 +203,7 @@
                         contentType: "application/json",
                         success: function (res) {
                             localStorage.clear()
-                            alert("Đặt Hàng Thành Công, Nhân Viên Sẽ Liên Hệ Lại Với Bạn Để Xác Nhận!!!")
-                            window.location.href="/trang-chu"
+                            $(".alert").show()
                         },
                         error: function () {
                             alert("fail")

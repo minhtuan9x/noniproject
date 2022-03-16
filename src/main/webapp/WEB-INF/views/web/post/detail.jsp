@@ -28,7 +28,7 @@
                     <h1>${post.title}</h1>
                     <br>
                     <p style="font-size: 90%;color: #5a5a5a">Đăng bởi: ${post.createdBy} - Ngày
-                        đăng: ${post.createdDateStr}</p>
+                        đăng: ${post.createDateStr}</p>
                     <hr>
                 </div>
             </div>
@@ -72,23 +72,23 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <label>Bình luận</label>
-                                    <textarea class="form-control" rows="3" name="main"></textarea>
+                                    <textarea class="form-control" rows="3" name="main" id="main"></textarea>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <label>Tên*</label>
-                                    <input type="text" class="form-control" name="name">
+                                    <input type="text" class="form-control" name="name" id="name">
                                 </div>
                                 <div class="col-md-6">
                                     <label>Email*</label>
-                                    <input type="email" class="form-control" name="email">
+                                    <input type="email" class="form-control" name="email" id="email">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <label>Số điện thoại</label>
-                                    <input type="text" class="form-control" name="phone">
+                                    <input type="text" class="form-control" name="phone" id="phone">
                                 </div>
                             </div>
                             <br>
@@ -117,7 +117,7 @@
                     <c:forEach var="item" items="${postByDates}">
                         <a style="color: darkred" href="/post/${item.id}/detail">${item.title}</a>
                         <p style="font-size: 70%;color: #5a5a5a">Đăng bởi: ${post.createdBy} - Ngày
-                            đăng: ${post.createdDateStr}</p>
+                            đăng: ${post.createDateStr}</p>
                         <hr style="width: 30px">
                     </c:forEach>
                 </div>
@@ -167,9 +167,9 @@
         $("#formfeedback").submit(function (e) {
             e.preventDefault()
             var dataIn = $("#formfeedback").serializeArray()
-            var name = $("input[name='name']").val()
-            var email = $("input[name='email']").val()
-            var comment = $("textarea[name='main']").val()
+            let name = $("#name").val()
+            let email = $("#email").val()
+            let comment = $("#main").val()
             console.log(dataIn)
             let data = {};
             dataIn.forEach(item => {

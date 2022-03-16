@@ -10,4 +10,5 @@ import java.util.List;
 public interface ProductRepository extends ProductRepositoryCustom, JpaRepository<ProductEntity,Long> {
     void deleteByIdIn(List<Long> ids);
     List<ProductEntity> getAllByOrderByCreatedDateDesc();
+    List<ProductEntity> findAllByNameContaining(String name);
 }

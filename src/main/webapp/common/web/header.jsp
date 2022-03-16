@@ -21,12 +21,9 @@
         <nav class="my-2 my-md-0 mr-md-3" id="td123">
             <a class="p-2 text-dark" href="<c:url value="/introduce" />">GIỚI THIỆU</a>
             <a class="p-2 text-dark" href="<c:url value="/product/list" />">SẢN PHẨM</a>
-            <a class="p-2 text-dark dropdown-toggle" href="#"
-               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">TÌM HIỂU</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+            <a class="p-2 text-dark dropdown-toggle" href="#" role="button"
+               id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">TÌM HIỂU</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             </div>
             <a class="p-2 text-dark" href="<c:url value="/post/list" />">BLOGS</a>
             <a class="p-2 text-dark" href="<c:url value="/video" />">VIDEOS</a>
@@ -35,13 +32,14 @@
                 <asp:Label ID="lblCartCount" runat="server" CssClass="badge badge-warning"  ForeColor="White"/>
                 <span id="lengthItems"></span>
             </a>
+
         </nav>
         <!-- <a id="cham" class="btn btn-outline-primary" href="#"><i class="fa fa-search" aria-hidden="true"></i></a> -->
-        <form id="formsearch" style="padding-right: 10%;float: right;">
+        <form id="formsearch" method="get" action="<c:url value="/search"/> " style="padding-right: 10%;float: right;">
             <div class="input-group" style="width: auto">
-                <input id="inhien" type="text" class="form-control" placeholder="Tìm kiếm sản phẩm...">
+                <input id="inhien" type="text" class="form-control" name="name" placeholder="Tìm kiếm sản phẩm...">
                 <div type="button" id="hien" class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-search" aria-hidden="true"></i></span>
+                    <span class="input-group-text" type="submit"><i class="fa fa-search" aria-hidden="true"></i></span>
                 </div>
             </div>
         </form>
@@ -49,9 +47,27 @@
 </header>
 
 <script>
+    $(document).ready(function (){
+        $.ajax({
+            url:"<c:url value="/api/research"/> ",
+            type:"get",
+            datatype:"json",
+            success:function (res){
+                let str = "";
+                res.forEach(item=>{
+                    str+=' <a class="dropdown-item" href="<c:url value="/research/"/>'+item.id+'">'+item.name+'</a>';
+                })
+
+                $(".dropdown-menu").append(str);
+            },
+            error:function (){
+                alert("fail")
+            }
+        })
+    })
     $("#inhien").hide()
     $(document).ready(
-        $("#formsearch").click(function (e) {
+        $("#hien").click(function (e) {
             e.preventDefault();
             $("#inhien").toggle()
         })

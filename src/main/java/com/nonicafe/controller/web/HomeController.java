@@ -1,5 +1,6 @@
 package com.nonicafe.controller.web;
 
+import com.nonicafe.service.IntroduceService;
 import com.nonicafe.service.PostService;
 import com.nonicafe.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,12 @@ public class HomeController {
 	private PostService postService;
 	@Autowired
 	private VideoService videoService;
-
+	@Autowired
+	private IntroduceService introduceService;
 	@RequestMapping(value = "/trang-chu", method = RequestMethod.GET)
 	public ModelAndView homePage() {
 		ModelAndView mav = new ModelAndView("web/home");
+		mav.addObject("intro",introduceService.findOne(5L));
 		mav.addObject("posts",postService.findTop4ByOrderByCreatedDateDesc());
 		mav.addObject("videos",videoService.findTop6());
 		return mav;

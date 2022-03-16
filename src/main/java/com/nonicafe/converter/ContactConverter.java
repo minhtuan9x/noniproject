@@ -25,13 +25,13 @@ public class ContactConverter {
 
     public ContactDTO toContactDTO(ContactEntity contactEntity) {
         ContactDTO contactDTO = modelMapper.map(contactEntity, ContactDTO.class);
-        contactDTO.setCreatedDateStr(DateUtils.toDateStr(contactEntity.getCreatedDate()));
+        contactDTO.setCreateDateStr(DateUtils.toDateStr(contactEntity.getCreatedDate()));
         return contactDTO;
     }
 
     public ContactResponse toContactResponse(ContactEntity contactEntity) {
         ContactResponse contactResponse = modelMapper.map(contactEntity, ContactResponse.class);
-        contactResponse.setCreatedDateStr(DateUtils.toDateStr(contactEntity.getCreatedDate()));
+        contactResponse.setCreateDateStr(DateUtils.toDateStr(contactEntity.getCreatedDate()));
         if (contactEntity.getStatus() == 0) {
             contactResponse.setProcess(ProcessConstant.DON_HANG_MOI);
         } else {

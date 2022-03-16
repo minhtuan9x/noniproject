@@ -171,6 +171,32 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
+                <li class="">
+                    <a href='<c:url value='/admin/introduce-detail?id=5'/>'>
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Bài Giới Thiệu Trang Chủ
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="nav nav-list">
+        <li class="">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fas fa-plus"></i>
+                <span class="menu-text">QL Tìm Hiểu</span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+            <ul class="submenu">
+                <li class="">
+                    <a href='<c:url value='/admin/research-list'/>'>
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Danh sách bài tìm hiểu
+                    </a>
+                    <b class="arrow"></b>
+                </li>
             </ul>
         </li>
     </ul>

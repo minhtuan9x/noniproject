@@ -1,8 +1,6 @@
 package com.nonicafe.dto;
 
-import com.nonicafe.entity.BaseEntity;
-
-public class CommentProductDTO extends BaseEntity {
+public class CommentProductDTO extends AbstractDTO {
     private String name;
     private String email;
     private String phone;

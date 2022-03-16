@@ -6,6 +6,7 @@ import com.nonicafe.dto.ContactDTO;
 import com.nonicafe.dto.request.ProcessRequest;
 import com.nonicafe.dto.response.ContactDetailResponse;
 import com.nonicafe.dto.response.ContactResponse;
+import com.nonicafe.dto.response.ContactStatus;
 import com.nonicafe.entity.ContactEntity;
 import com.nonicafe.entity.ProductContactEntity;
 import com.nonicafe.repository.ContactRepository;
@@ -73,7 +74,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public AbstractDTO<ContactResponse> findAllWithPage(Integer page) {
         AbstractDTO<ContactResponse> contactResponseAbstractDTO = new AbstractDTO<>();
-        Page<ContactEntity> contactEntityPage = contactRepository.findAll(new PageRequest(page-1,20));
+        Page<ContactEntity> contactEntityPage = contactRepository.OrderByCreatedDateDesc(new PageRequest(page-1,20));
         contactResponseAbstractDTO.setPage(page);
         contactResponseAbstractDTO.setListResult(contactEntityPage.getContent().stream().map(item->contactConverver.toContactResponse(item)).collect(Collectors.toList()));
         contactResponseAbstractDTO.setTotalPage(contactEntityPage.getTotalPages());
@@ -97,5 +98,15 @@ public class ContactServiceImpl implements ContactService {
     @Transactional
     public List<Long> delete(List<Long> ids) {
         return contactRepository.deleteByIdIn(ids);
+    }
+
+    @Override
+    public ContactStatus getStatus() {
+        ContactStatus contactStatus = new ContactStatus();
+        contactStatus.setContactNew(contactRepository.countByStatus(0));
+        contactStatus.setContactProcess(contactRepository.countByStatus(1));
+        contactStatus.setContactProcessed(contactRepository.countByStatus(2));
+        contactStatus.setTotalProcess((int) contactRepository.count());
+        return contactStatus;
     }
 }

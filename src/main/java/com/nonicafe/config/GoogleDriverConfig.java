@@ -6,6 +6,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
+import com.nonicafe.constant.UploadConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,8 +44,7 @@ public class GoogleDriverConfig {
                 .setJsonFactory(jsonFactory)
                 .setServiceAccountId("google-driver-api@sodium-binder-336115.iam.gserviceaccount.com")
                 .setServiceAccountScopes(elenco)
-                .setServiceAccountPrivateKeyFromP12File(new File("E:\\sodium-binder-336115-0295ffdc922b.p12"))
+                .setServiceAccountPrivateKeyFromP12File(new File(UploadConstant.URL_FILE_SERVER))
                 .build();
     }
-
 }

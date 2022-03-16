@@ -44,7 +44,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <p style="font-size: 90%;color: #5a5a5a">Đăng bởi: ${item.createdBy} - Ngày
-                            đăng: ${item.createdDateStr}</p>
+                            đăng: ${item.createDateStr}</p>
                     </div>
                 </div>
             </div>

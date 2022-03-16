@@ -12,4 +12,5 @@ public interface ProductService {
     List<Long> delete(List<Long> productIDs);
     ProductDTO findById(Long id);
     List<ProductResponse> findAll();
+    List<ProductResponse> findByName(String name);
 }

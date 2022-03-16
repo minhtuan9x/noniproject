@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -69,6 +70,12 @@ public class ProductServiceImpl implements ProductService {
             productResponses.add(productConverter.toProductRespone(item));
         });
         return productResponses;
+    }
+
+    @Override
+    public List<ProductResponse> findByName(String name) {
+        name = name!=null?name:"";
+        return Optional.of(productRepository.findAllByNameContaining(name).stream().map(item->productConverter.toProductRespone(item)).collect(Collectors.toList())).orElse(new ArrayList<>());
     }
 
     public ProductRequest getParams(Map<String,String> params){

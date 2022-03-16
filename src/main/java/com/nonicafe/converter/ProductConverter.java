@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -39,18 +40,19 @@ public class ProductConverter {
     public ProductEntity toProductEntity(ProductDTO productDTO) throws IOException {
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
         ProductEntity productEntityFound = new ProductEntity();
-        if(productDTO.getId()!=null){
+        if (productDTO.getId() != null) {
             productEntityFound = productRepository.findOne(productDTO.getId());
-            if(ValidateInputUtil.isFileValid(productDTO.getFileImgTitle())){
-                googleDriverService.delete(Arrays.asList(productEntityFound.getImgTitle().replace(UploadConstant.URL_SHOW,"")));
+            if (ValidateInputUtil.isFileValid(productDTO.getFileImgTitle())) {
+                googleDriverService.delete(Arrays.asList(productEntityFound.getImgTitle().replace(UploadConstant.URL_SHOW, "")));
             }
-            if(ValidateInputUtil.isFileValid(productDTO.getFileImgExpands())){
-                googleDriverService.delete(Arrays.stream(productEntityFound.getImgLink().trim().split(",")).map(item->item.replace(UploadConstant.URL_SHOW,"")).collect(Collectors.toList()));
+            if (ValidateInputUtil.isFileValid(productDTO.getFileImgExpands())) {
+                if (Objects.nonNull(productEntityFound.getImgLink()))
+                    googleDriverService.delete(Arrays.stream(productEntityFound.getImgLink().trim().split(",")).map(item -> item.replace(UploadConstant.URL_SHOW, "")).collect(Collectors.toList()));
             }
         }
         if (ValidateInputUtil.isFileValid(productDTO.getFileImgTitle())) {
             productEntity.setImgTitle(UploadConstant.URL_SHOW + googleDriverService.upLoadImg(productDTO.getFileImgTitle()));
-        }else {
+        } else {
             productEntity.setImgTitle(productEntityFound.getImgTitle());
         }
         if (ValidateInputUtil.isFileValid(productDTO.getFileImgExpands())) {
@@ -60,7 +62,7 @@ public class ProductConverter {
                     ids.add(UploadConstant.URL_SHOW + googleDriverService.upLoadImg(item));
             }
             productEntity.setImgLink(String.join(",", ids));
-        }else {
+        } else {
             productEntity.setImgLink(productEntityFound.getImgLink());
         }
         if (productEntity.getId() == null)
@@ -94,7 +96,8 @@ public class ProductConverter {
         if (productEntity.getPrice() != null) {
             productDTO.setPriceStr(decimalFormat.format(productEntity.getPrice()));
         }
-        productDTO.setImgLink(Arrays.asList(productEntity.getImgLink().trim().split(",")));
+        if (Objects.nonNull(productEntity.getImgLink()))
+            productDTO.setImgLink(Arrays.asList(productEntity.getImgLink().trim().split(",")));
         productDTO.setCommentProductDTOS(commentProductDTOListFinal);
         productDTO.setContactDTOS(contactDTOS);
         return productDTO;

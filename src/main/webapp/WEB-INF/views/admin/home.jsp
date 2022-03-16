@@ -19,7 +19,15 @@
         <div class="page-content">
             <div class="row" >
                 <div class="col-xs-12">
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Thống kê đơn hàng </h3>
+                            <p>Tổng số đơn hàng chưa xử lí: ${status.contactNew}</p>
+                            <p>Tổng số đơn hàng đang xử lí: ${status.contactProcess}</p>
+                            <p>Tổng số đơn hàng đã xử lí: ${status.contactProcessed}</p>
+                            <p>Tổng số đơn hàng: ${status.totalProcess}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

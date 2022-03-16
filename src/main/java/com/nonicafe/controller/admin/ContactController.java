@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Objects;
+
 @Controller(value = "contactControllerOfAd")
 @RequestMapping("/admin")
 public class ContactController {
@@ -21,7 +23,7 @@ public class ContactController {
                              @RequestParam(required = false) String date,
                              @RequestParam(required = false) Integer page) {
         ModelAndView modelAndView = new ModelAndView("admin/contact/list");
-        if (!ValidateInputUtil.isValid(status) && !ValidateInputUtil.isValid(name) && !ValidateInputUtil.isValid(date)) {
+        if (Objects.isNull(status) || status != 0 && status != 1 && status != 2 && !ValidateInputUtil.isValid(name) && !ValidateInputUtil.isValid(date)) {
             if (page == null)
                 page = 1;
             modelAndView.addObject("contacts", contactService.findAllWithPage(page));

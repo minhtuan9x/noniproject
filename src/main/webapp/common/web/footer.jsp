@@ -40,12 +40,14 @@
 		</div>
 	</div>
 	<script>
-		$(document).ajaxStart(function (){
-			$("#modalLoad").modal("show")
+		$(document).ready(function (){
+			$(document).ajaxStart(function (){
+				$("#modalLoad").modal("show")
+			})
+			$(document).ajaxStop(function (e){
+				$('#modalLoad').modal('hide');
+			});
 		})
-		$(document).ajaxStop(function (e){
-			$('#modalLoad').modal('hide');
-		});
 	</script>
 	<style>
 

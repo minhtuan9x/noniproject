@@ -2,6 +2,7 @@ package com.nonicafe.api.admin;
 
 import com.nonicafe.dto.ContactDTO;
 import com.nonicafe.dto.request.ProcessRequest;
+import com.nonicafe.dto.response.ContactStatus;
 import com.nonicafe.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

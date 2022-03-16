@@ -26,7 +26,6 @@ public class IntroduceServiceImpl implements IntroduceService {
     @Override
     @Transactional
     public void save(IntroduceDTO introduceDTO) {
-        introduceDTO.setId(2L);
         introduceRepository.save(introduceConverter.toIntroduceEntity(introduceDTO));
     }
 }
